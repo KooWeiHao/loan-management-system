@@ -1,4 +1,4 @@
-package eric.koo.loanmanagementsystem;
+package eric.koo.loan.management.system;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
