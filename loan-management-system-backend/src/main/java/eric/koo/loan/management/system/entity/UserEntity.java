@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -21,7 +20,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name="`USER`")
-public class UserEntity implements Serializable {
+public class UserEntity extends AbstractEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
