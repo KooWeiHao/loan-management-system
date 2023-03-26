@@ -3,11 +3,9 @@ package eric.koo.loan.management.system.controller;
 import eric.koo.loan.management.system.controller.model.response.AuthResponseModel;
 import eric.koo.loan.management.system.controller.model.resquest.LoginRequestModel;
 import eric.koo.loan.management.system.controller.model.resquest.RegisterRequestModel;
-import eric.koo.loan.management.system.entity.UserEntity;
 import eric.koo.loan.management.system.security.Role;
-import eric.koo.loan.management.system.service.AdminService;
-import eric.koo.loan.management.system.service.UserService;
-import org.springframework.beans.BeanUtils;
+import eric.koo.loan.management.system.service.BankStaffService;
+import eric.koo.loan.management.system.service.ApplicantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -27,15 +25,15 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 class AuthController {
 
-    private final UserService userService;
-    private final AdminService adminService;
+    private final ApplicantService applicantService;
+    private final BankStaffService bankStaffService;
 
     private final Validator registerRequestValidator;
 
     @Autowired
-    AuthController(UserService userService, AdminService adminService, @Qualifier("registerRequestValidator") Validator registerRequestValidator) {
-        this.userService = userService;
-        this.adminService = adminService;
+    AuthController(ApplicantService applicantService, BankStaffService bankStaffService, @Qualifier("registerRequestValidator") Validator registerRequestValidator) {
+        this.applicantService = applicantService;
+        this.bankStaffService = bankStaffService;
         this.registerRequestValidator = registerRequestValidator;
     }
 
@@ -46,39 +44,36 @@ class AuthController {
 
     @PostMapping("/register")
     AuthResponseModel register(@Valid @RequestBody RegisterRequestModel registerRequestModel, BindingResult bindingResult) {
-        var newUser = userService.createUser(registerRequestModel.getUsername(), registerRequestModel.getPassword());
+        var newApplicant = applicantService.createApplicant(registerRequestModel.getUsername(), registerRequestModel.getPassword());
 
-        return getAuthResponseModelByUserEntity(newUser, Role.USER);
+        return createAuthResponseModel(newApplicant.getUsername(), Role.APPLICANT);
     }
 
     @PostMapping("/login")
     AuthResponseModel login(@Valid @RequestBody LoginRequestModel loginRequestModel, BindingResult bindingResult) {
-        var user = userService.getByUsernameAndPassword(loginRequestModel.getUsername(), loginRequestModel.getPassword());
+        var applicant = applicantService.getByUsernameAndPassword(loginRequestModel.getUsername(), loginRequestModel.getPassword());
 
-        if(user.isEmpty()) {
+        if(applicant.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("Invalid Credentials - %s", loginRequestModel.getUsername()));
         }
 
-        return getAuthResponseModelByUserEntity(user.get(), Role.USER);
+        return createAuthResponseModel(applicant.get().getUsername(), Role.APPLICANT);
     }
 
-    @PostMapping("/login-as-admin")
-    AuthResponseModel loginAsAdmin(@Valid @RequestBody LoginRequestModel loginRequestModel, BindingResult bindingResult) {
-        var isAdmin = adminService.validateUsernameAndPassword(loginRequestModel.getUsername(), loginRequestModel.getPassword());
+    @PostMapping("/login-as-bank-staff")
+    AuthResponseModel loginAsBankStaff(@Valid @RequestBody LoginRequestModel loginRequestModel, BindingResult bindingResult) {
+        var isBankStaff = bankStaffService.validateUsernameAndPassword(loginRequestModel.getUsername(), loginRequestModel.getPassword());
 
-        if(!isAdmin) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("Invalid Admin Credentials - %s", loginRequestModel.getUsername()));
+        if(!isBankStaff) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("Invalid Bank Staff Credentials - %s", loginRequestModel.getUsername()));
         }
 
-        var admin = new UserEntity();
-        BeanUtils.copyProperties(loginRequestModel, admin);
-
-        return getAuthResponseModelByUserEntity(admin, Role.ADMIN);
+        return createAuthResponseModel(loginRequestModel.getUsername(), Role.BANK_STAFF);
     }
 
-    private AuthResponseModel getAuthResponseModelByUserEntity(UserEntity userEntity, Role role) {
+    private AuthResponseModel createAuthResponseModel(String username, Role role) {
         var authResponse = new AuthResponseModel();
-        BeanUtils.copyProperties(userEntity, authResponse);
+        authResponse.setUsername(username);
         authResponse.setRole(role);
 
         return authResponse;

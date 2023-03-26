@@ -19,14 +19,14 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name="`USER`")
-public class UserEntity extends AbstractEntity {
+@Table(name="APPLICANT")
+public class ApplicantEntity extends AbstractEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
-    private Long userId;
+    @Column(name = "APPLICANT_ID")
+    private Long applicantId;
 
     @NotNull
     @Column(name = "USERNAME")
@@ -40,12 +40,12 @@ public class UserEntity extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserEntity that = (UserEntity) o;
-        return Objects.equals(userId, that.userId);
+        ApplicantEntity that = (ApplicantEntity) o;
+        return Objects.equals(applicantId, that.applicantId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId);
+        return Objects.hash(applicantId);
     }
 }

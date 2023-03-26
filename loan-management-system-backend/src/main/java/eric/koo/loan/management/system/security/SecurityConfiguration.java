@@ -20,15 +20,15 @@ class SecurityConfiguration {
     private String apiPathPrefix;
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPoint authenticationEntryPoint, AuthenticationProvider userAuthenticationProvider, AuthenticationProvider adminAuthenticationProvider) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPoint authenticationEntryPoint, AuthenticationProvider applicantAuthenticationProvider, AuthenticationProvider bankStaffAuthenticationProvider) throws Exception {
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
-                .authenticationProvider(adminAuthenticationProvider)
-                .authenticationProvider(userAuthenticationProvider)
+                .authenticationProvider(bankStaffAuthenticationProvider)
+                .authenticationProvider(applicantAuthenticationProvider)
                 .authorizeRequests()
                 .antMatchers(
                         Stream.concat(
@@ -39,7 +39,7 @@ class SecurityConfiguration {
                                 Stream.of("/auth/**").map(api -> apiPathPrefix + api)
                         ).toArray(String[]::new)
                 ).permitAll()
-                .anyRequest().hasRole(Role.USER.name())
+                .anyRequest().hasRole(Role.APPLICANT.name())
                 .and()
                 .build();
     }
