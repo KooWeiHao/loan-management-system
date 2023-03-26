@@ -54,7 +54,7 @@ public class CreditFacilityEntity extends AbstractEntity{
     @Column(name = "APPROVED_DATE")
     private LocalDateTime approvedDate;
 
-    enum Status {
+    public enum Status {
         PENDING,
         APPROVED
     }
