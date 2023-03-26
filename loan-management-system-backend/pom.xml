@@ -64,6 +64,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- I/O -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
 		<!-- Developer Tools -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
