@@ -5,7 +5,6 @@ import eric.koo.loan.management.system.entity.ApplicantEntity;
 import java.util.Optional;
 
 public interface ApplicantService {
-    Optional<ApplicantEntity> getApplicantByUsername(String username);
     Optional<ApplicantEntity> getApplicantByApplicantId(long applicantId);
     Optional<ApplicantEntity> getApplicantByUsernameAndPassword(String username, String password);
 

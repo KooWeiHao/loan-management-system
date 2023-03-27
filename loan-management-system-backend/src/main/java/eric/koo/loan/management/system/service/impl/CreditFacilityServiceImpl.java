@@ -43,10 +43,4 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
 
         return newCreditFacility;
     }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<CreditFacilityEntity> findAllCreditFacility() {
-        return creditFacilityRepository.findAll();
-    }
 }

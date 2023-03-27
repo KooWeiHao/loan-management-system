@@ -26,12 +26,6 @@ class ApplicantServiceImpl implements ApplicantService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<ApplicantEntity> getApplicantByUsername(String username) {
-        return applicantRepository.getByUsername(username);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public Optional<ApplicantEntity> getApplicantByApplicantId(long applicantId) {
         return applicantRepository.findById(applicantId);
     }
