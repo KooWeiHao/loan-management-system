@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,7 +34,6 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
                 .orElseGet(() -> {
                     var newCreditFacility = new CreditFacilityEntity();
                     newCreditFacility.setApplicant(applicant);
-                    newCreditFacility.setStatus(CreditFacilityEntity.Status.PENDING);
                     return creditFacilityRepository.save(newCreditFacility);
                 });
     }
@@ -46,14 +44,7 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
         var creditFacility = creditFacilityRepository.findById(creditFacilityId)
                 .orElseThrow(() -> new BadRequestException(String.format("Invalid credit facility - %s", creditFacilityId)));
 
-        if(creditFacility.getStatus() == CreditFacilityEntity.Status.APPROVED) {
-            throw new BadRequestException(String.format("Credit facility has been approved - %s", creditFacility.getCreditFacilityId()));
-        }
-
         creditFacility.setCreditLimit(creditLimit);
-        creditFacility.setStatus(CreditFacilityEntity.Status.APPROVED);
-        creditFacility.setApprovedBy(bankStaff);
-        creditFacility.setApprovedDate(LocalDateTime.now());
 
         return creditFacilityRepository.save(creditFacility);
     }

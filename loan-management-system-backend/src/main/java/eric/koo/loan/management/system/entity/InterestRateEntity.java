@@ -7,13 +7,12 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -21,42 +20,29 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name="APPLICANT")
-public class ApplicantEntity extends AbstractEntity {
+@Table(name="INTEREST_RATE")
+public class InterestRateEntity extends AbstractEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "APPLICANT_ID")
-    private Long applicantId;
+    @Column(name = "INTEREST_RATE_ID")
+    private Long interestRateId;
 
     @NotNull
-    @Column(name = "USERNAME")
-    private String username;
-
-    @NotNull
-    @Column(name = "PASSWORD")
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS")
-    private Status status;
-
-    enum Status {
-        PROCESSING,
-        APPROVED
-    }
+    @Column(name = "INTEREST_RATE_DATE")
+    private LocalDate interestRateDate;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ApplicantEntity that = (ApplicantEntity) o;
-        return Objects.equals(applicantId, that.applicantId);
+        InterestRateEntity that = (InterestRateEntity) o;
+        return Objects.equals(interestRateId, that.interestRateId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(applicantId);
+        return Objects.hash(interestRateId);
     }
 }

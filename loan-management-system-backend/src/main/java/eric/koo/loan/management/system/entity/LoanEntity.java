@@ -49,8 +49,8 @@ public class LoanEntity extends AbstractEntity {
     private BigDecimal principal;
 
     @NotNull
-    @Column(name = "INTEREST_DATE")
-    private BigDecimal interestDate;
+    @Column(name = "INTEREST_RATE")
+    private BigDecimal interestRate;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -77,8 +77,7 @@ public class LoanEntity extends AbstractEntity {
     }
 
     enum Status {
-        PENDING,
-        APPROVED,
+        PROCESSING,
         ACTIVE,
         PAID
     }
