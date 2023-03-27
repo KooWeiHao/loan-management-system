@@ -1,15 +1,16 @@
 package eric.koo.loan.management.system.service.impl;
 
+import eric.koo.loan.management.system.entity.ApplicantEntity;
 import eric.koo.loan.management.system.exception.BadRequestException;
 import eric.koo.loan.management.system.entity.CreditFacilityEntity;
 import eric.koo.loan.management.system.repository.CreditFacilityRepository;
 import eric.koo.loan.management.system.service.ApplicantService;
 import eric.koo.loan.management.system.service.CreditFacilityService;
+import eric.koo.loan.management.system.service.CreditLimitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -17,36 +18,30 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
 
     private final CreditFacilityRepository creditFacilityRepository;
     private final ApplicantService applicantService;
+    private final CreditLimitService creditLimitService;
 
     @Autowired
-    public CreditFacilityServiceImpl(CreditFacilityRepository creditFacilityRepository, ApplicantService applicantService) {
+    public CreditFacilityServiceImpl(CreditFacilityRepository creditFacilityRepository, ApplicantService applicantService, CreditLimitService creditLimitService) {
         this.creditFacilityRepository = creditFacilityRepository;
         this.applicantService = applicantService;
+        this.creditLimitService = creditLimitService;
     }
 
     @Transactional
     @Override
-    public CreditFacilityEntity getOrCreateCreditFacility(String applicantUsername) {
-        var applicant = applicantService.getApplicantByUsername(applicantUsername)
-                .orElseThrow(() -> new BadRequestException(String.format("Invalid applicant - %s", applicantUsername)));
+    public CreditFacilityEntity createCreditFacility(long applicantId, String bankStaff) {
+        var applicant = applicantService.getApplicantByApplicantId(applicantId)
+                .orElseThrow(() -> new BadRequestException(String.format("Invalid applicant - %s", applicantId)));
 
-        return creditFacilityRepository.getByApplicantUsername(applicant.getUsername())
-                .orElseGet(() -> {
-                    var newCreditFacility = new CreditFacilityEntity();
-                    newCreditFacility.setApplicant(applicant);
-                    return creditFacilityRepository.save(newCreditFacility);
-                });
-    }
+        if(applicant.getStatus() != ApplicantEntity.Status.APPROVED) {
+            throw new BadRequestException(String.format("Only approved applicant can open a credit facility - %s", applicantId));
+        }
 
-    @Transactional
-    @Override
-    public CreditFacilityEntity approveCreditFacility(long creditFacilityId, BigDecimal creditLimit, String bankStaff) {
-        var creditFacility = creditFacilityRepository.findById(creditFacilityId)
-                .orElseThrow(() -> new BadRequestException(String.format("Invalid credit facility - %s", creditFacilityId)));
+        var newCreditFacility = new CreditFacilityEntity();
+        newCreditFacility.setApplicant(applicant);
+        newCreditFacility.setCreditLimit(creditLimitService.getLatestOrDefaultCreditLimit().getCreditLimit());
 
-        creditFacility.setCreditLimit(creditLimit);
-
-        return creditFacilityRepository.save(creditFacility);
+        return newCreditFacility;
     }
 
     @Transactional(readOnly = true)

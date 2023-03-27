@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,12 @@ class ApplicantServiceImpl implements ApplicantService {
 
     @Transactional(readOnly = true)
     @Override
+    public Optional<ApplicantEntity> getApplicantByApplicantId(long applicantId) {
+        return applicantRepository.findById(applicantId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Optional<ApplicantEntity> getApplicantByUsernameAndPassword(String username, String password) {
         return applicantRepository.getByUsername(username)
                 .filter(applicant -> passwordEncoder.matches(password, applicant.getPassword()));
@@ -47,7 +54,21 @@ class ApplicantServiceImpl implements ApplicantService {
         var newApplicant = new ApplicantEntity();
         newApplicant.setUsername(username);
         newApplicant.setPassword(passwordEncoder.encode(password));
+        newApplicant.setStatus(ApplicantEntity.Status.PROCESSING);
 
         return applicantRepository.save(newApplicant);
+    }
+
+    @Transactional
+    @Override
+    public ApplicantEntity approveApplicant(long applicantId, String bankStaff) {
+        var applicant = applicantRepository.findById(applicantId)
+                .orElseThrow(() -> new BadRequestException(String.format("Invalid applicant - %s", applicantId)));
+
+        applicant.setStatus(ApplicantEntity.Status.APPROVED);
+        applicant.setApprovedBy(bankStaff);
+        applicant.setApprovedDate(LocalDateTime.now());
+
+        return applicantRepository.save(applicant);
     }
 }
