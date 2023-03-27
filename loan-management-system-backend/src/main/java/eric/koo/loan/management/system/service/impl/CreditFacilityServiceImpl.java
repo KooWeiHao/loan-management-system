@@ -1,6 +1,6 @@
 package eric.koo.loan.management.system.service.impl;
 
-import eric.koo.loan.management.system.config.LoanManagementSystemException;
+import eric.koo.loan.management.system.exception.LoanManagementSystemException;
 import eric.koo.loan.management.system.entity.CreditFacilityEntity;
 import eric.koo.loan.management.system.repository.CreditFacilityRepository;
 import eric.koo.loan.management.system.service.ApplicantService;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Service
 class CreditFacilityServiceImpl implements CreditFacilityService {
@@ -30,17 +29,16 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
         var applicant = applicantService.getApplicantByUsername(applicantUsername)
                 .orElseThrow(() -> new LoanManagementSystemException(String.format("Invalid applicant - %s", applicantUsername)));
 
+        var creditFacility = creditFacilityRepository.getByApplicantUsername(applicant.getUsername());
+        if(creditFacility.isPresent()) {
+            throw new LoanManagementSystemException(String.format("Credit facility has been opened for %s - Status: [%s]", applicantUsername, creditFacility.get().getStatus()));
+        }
+
         var newCreditFacility = new CreditFacilityEntity();
         newCreditFacility.setCreditLimit(creditLimit);
         newCreditFacility.setApplicant(applicant);
         newCreditFacility.setStatus(CreditFacilityEntity.Status.PENDING);
 
         return creditFacilityRepository.save(newCreditFacility);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<CreditFacilityEntity> getCreditFacilityByApplicantUsername(String applicantUsername) {
-        return creditFacilityRepository.getByApplicantUsername(applicantUsername);
     }
 }

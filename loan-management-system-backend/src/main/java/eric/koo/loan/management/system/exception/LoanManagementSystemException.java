@@ -1,4 +1,4 @@
-package eric.koo.loan.management.system.config;
+package eric.koo.loan.management.system.exception;
 
 public class LoanManagementSystemException extends RuntimeException{
 
