@@ -1,6 +1,6 @@
 package eric.koo.loan.management.system.service.impl;
 
-import eric.koo.loan.management.system.exception.LoanManagementSystemException;
+import eric.koo.loan.management.system.exception.BadRequestException;
 import eric.koo.loan.management.system.entity.ApplicantEntity;
 import eric.koo.loan.management.system.repository.ApplicantRepository;
 import eric.koo.loan.management.system.service.ApplicantService;
@@ -41,7 +41,7 @@ class ApplicantServiceImpl implements ApplicantService {
     public ApplicantEntity createApplicant(String username, String password) {
         var applicant = applicantRepository.getByUsername(username);
         if(applicant.isPresent()) {
-            throw new LoanManagementSystemException(String.format("Username is registered - %s", username));
+            throw new BadRequestException(String.format("Username is registered - %s", username));
         }
 
         var newApplicant = new ApplicantEntity();

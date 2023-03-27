@@ -39,7 +39,6 @@ public class CreditFacilityEntity extends AbstractEntity{
     @JoinColumn(name = "APPLICANT_ID")
     private ApplicantEntity applicant;
 
-    @NotNull
     @Column(name = "CREDIT_LIMIT")
     private BigDecimal creditLimit;
 

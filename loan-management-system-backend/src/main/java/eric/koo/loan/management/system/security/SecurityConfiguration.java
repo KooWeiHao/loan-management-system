@@ -2,6 +2,7 @@ package eric.koo.loan.management.system.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,6 +33,7 @@ class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/error").permitAll()
                 .antMatchers(appendApiPathPrefix("/auth/**")).permitAll()
+                .antMatchers(HttpMethod.POST, appendApiPathPrefix("/credit-facility")).hasRole(Role.APPLICANT.name())
                 .antMatchers(appendApiPathPrefix("/credit-facility/approve")).hasRole(Role.BANK_STAFF.name())
                 .anyRequest().authenticated()
                 .and()

@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 class RestControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(LoanManagementSystemException.class)
-    ErrorResponseModel handleLoanManagementSystemException(LoanManagementSystemException exception, HttpServletRequest request) {
+    @ExceptionHandler(BadRequestException.class)
+    ErrorResponseModel handleBadRequestException(BadRequestException exception, HttpServletRequest request) {
         return new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), request.getServletPath());
     }
 

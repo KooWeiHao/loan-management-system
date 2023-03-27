@@ -6,7 +6,10 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
-public class CreditFacilityCreateRequestModel {
+public class CreditFacilityApproveRequestModel {
+    @NotNull
+    private Long creditFacilityId;
+
     @NotNull
     private BigDecimal creditLimit;
 }

@@ -1,6 +1,6 @@
 package eric.koo.loan.management.system.service.impl;
 
-import eric.koo.loan.management.system.exception.LoanManagementSystemException;
+import eric.koo.loan.management.system.exception.BadRequestException;
 import eric.koo.loan.management.system.entity.CreditFacilityEntity;
 import eric.koo.loan.management.system.repository.CreditFacilityRepository;
 import eric.koo.loan.management.system.service.ApplicantService;
@@ -27,33 +27,30 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
 
     @Transactional
     @Override
-    public CreditFacilityEntity createCreditFacility(BigDecimal creditLimit, String applicantUsername) {
+    public CreditFacilityEntity getOrCreateCreditFacility(String applicantUsername) {
         var applicant = applicantService.getApplicantByUsername(applicantUsername)
-                .orElseThrow(() -> new LoanManagementSystemException(String.format("Invalid applicant - %s", applicantUsername)));
+                .orElseThrow(() -> new BadRequestException(String.format("Invalid applicant - %s", applicantUsername)));
 
-        var creditFacility = creditFacilityRepository.getByApplicantUsername(applicant.getUsername());
-        if(creditFacility.isPresent()) {
-            throw new LoanManagementSystemException(String.format("Credit facility has been opened for %s - Status: [%s]", applicantUsername, creditFacility.get().getStatus()));
-        }
-
-        var newCreditFacility = new CreditFacilityEntity();
-        newCreditFacility.setCreditLimit(creditLimit);
-        newCreditFacility.setApplicant(applicant);
-        newCreditFacility.setStatus(CreditFacilityEntity.Status.PENDING);
-
-        return creditFacilityRepository.save(newCreditFacility);
+        return creditFacilityRepository.getByApplicantUsername(applicant.getUsername())
+                .orElseGet(() -> {
+                    var newCreditFacility = new CreditFacilityEntity();
+                    newCreditFacility.setApplicant(applicant);
+                    newCreditFacility.setStatus(CreditFacilityEntity.Status.PENDING);
+                    return creditFacilityRepository.save(newCreditFacility);
+                });
     }
 
     @Transactional
     @Override
-    public CreditFacilityEntity approveCreditFacility(long creditFacilityId, String bankStaff) {
+    public CreditFacilityEntity approveCreditFacility(long creditFacilityId, BigDecimal creditLimit, String bankStaff) {
         var creditFacility = creditFacilityRepository.findById(creditFacilityId)
-                .orElseThrow(() -> new LoanManagementSystemException(String.format("Invalid credit facility - %s", creditFacilityId)));
+                .orElseThrow(() -> new BadRequestException(String.format("Invalid credit facility - %s", creditFacilityId)));
 
         if(creditFacility.getStatus() == CreditFacilityEntity.Status.APPROVED) {
-            throw new LoanManagementSystemException(String.format("Credit facility has been approved - %s", creditFacility.getCreditFacilityId()));
+            throw new BadRequestException(String.format("Credit facility has been approved - %s", creditFacility.getCreditFacilityId()));
         }
 
+        creditFacility.setCreditLimit(creditLimit);
         creditFacility.setStatus(CreditFacilityEntity.Status.APPROVED);
         creditFacility.setApprovedBy(bankStaff);
         creditFacility.setApprovedDate(LocalDateTime.now());
