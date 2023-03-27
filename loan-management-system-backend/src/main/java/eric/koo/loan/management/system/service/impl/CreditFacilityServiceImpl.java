@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 class CreditFacilityServiceImpl implements CreditFacilityService {
@@ -42,5 +42,11 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
         newCreditFacility.setCreditLimit(creditLimitService.getLatestOrDefaultCreditLimit().getCreditLimit());
 
         return newCreditFacility;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<CreditFacilityEntity> getCreditFacilityByApplicantUsername(String applicantUsername) {
+        return creditFacilityRepository.getByApplicantUsername(applicantUsername);
     }
 }

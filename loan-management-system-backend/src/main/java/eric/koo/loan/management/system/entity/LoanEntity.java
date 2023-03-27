@@ -76,7 +76,7 @@ public class LoanEntity extends AbstractEntity {
         CAR
     }
 
-    enum Status {
+    public enum Status {
         PROCESSING,
         ACTIVE,
         PAID
