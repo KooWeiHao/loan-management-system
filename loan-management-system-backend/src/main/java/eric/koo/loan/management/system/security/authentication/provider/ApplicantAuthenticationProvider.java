@@ -17,7 +17,7 @@ class ApplicantAuthenticationProvider extends AbstractAuthenticationProvider {
 
     @Override
     boolean isValid(String username, String password) {
-        return applicantService.getByUsernameAndPassword(username, password)
+        return applicantService.getApplicantByUsernameAndPassword(username, password)
                 .isPresent();
     }
 

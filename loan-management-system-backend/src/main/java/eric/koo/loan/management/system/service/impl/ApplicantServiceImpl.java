@@ -24,13 +24,13 @@ class ApplicantServiceImpl implements ApplicantService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<ApplicantEntity> getByUsername(String username) {
+    public Optional<ApplicantEntity> getApplicantByUsername(String username) {
         return applicantRepository.getByUsername(username);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<ApplicantEntity> getByUsernameAndPassword(String username, String password) {
+    public Optional<ApplicantEntity> getApplicantByUsernameAndPassword(String username, String password) {
         return applicantRepository.getByUsername(username)
                 .filter(applicant -> passwordEncoder.matches(password, applicant.getPassword()));
     }

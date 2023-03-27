@@ -21,7 +21,7 @@ class BankStaffServiceImpl implements BankStaffService {
     }
 
     @Override
-    public boolean validateUsernameAndPassword(String username, String password) {
+    public boolean validateBankStaffUsernameAndPassword(String username, String password) {
         return username.equals(bankStaffUsername) && passwordEncoder.matches(password, bankStaffPassword);
     }
 }

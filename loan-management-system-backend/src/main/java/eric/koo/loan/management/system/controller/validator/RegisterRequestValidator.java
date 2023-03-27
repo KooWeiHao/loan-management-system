@@ -26,7 +26,7 @@ class RegisterRequestValidator implements Validator {
     public void validate(Object target, Errors errors) {
         if(target instanceof RegisterRequestModel) {
             var registerRequest = (RegisterRequestModel) target;
-            var applicant = applicantService.getByUsername(registerRequest.getUsername());
+            var applicant = applicantService.getApplicantByUsername(registerRequest.getUsername());
 
             if(applicant.isPresent()) {
                 errors.reject("error", String.format("Username is registered - %s", registerRequest.getUsername()));

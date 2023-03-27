@@ -17,7 +17,7 @@ class BankStaffAuthenticationProvider extends AbstractAuthenticationProvider {
 
     @Override
     boolean isValid(String username, String password) {
-        return bankStaffService.validateUsernameAndPassword(username, password);
+        return bankStaffService.validateBankStaffUsernameAndPassword(username, password);
     }
 
     @Override

@@ -51,7 +51,7 @@ class AuthController {
 
     @PostMapping("/login")
     AuthResponseModel login(@Valid @RequestBody LoginRequestModel loginRequestModel, BindingResult bindingResult) {
-        var applicant = applicantService.getByUsernameAndPassword(loginRequestModel.getUsername(), loginRequestModel.getPassword());
+        var applicant = applicantService.getApplicantByUsernameAndPassword(loginRequestModel.getUsername(), loginRequestModel.getPassword());
 
         if(applicant.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("Invalid Credentials - %s", loginRequestModel.getUsername()));
@@ -62,7 +62,7 @@ class AuthController {
 
     @PostMapping("/login-as-bank-staff")
     AuthResponseModel loginAsBankStaff(@Valid @RequestBody LoginRequestModel loginRequestModel, BindingResult bindingResult) {
-        var isBankStaff = bankStaffService.validateUsernameAndPassword(loginRequestModel.getUsername(), loginRequestModel.getPassword());
+        var isBankStaff = bankStaffService.validateBankStaffUsernameAndPassword(loginRequestModel.getUsername(), loginRequestModel.getPassword());
 
         if(!isBankStaff) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("Invalid Bank Staff Credentials - %s", loginRequestModel.getUsername()));

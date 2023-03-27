@@ -27,7 +27,7 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
     @Transactional
     @Override
     public CreditFacilityEntity createCreditFacility(BigDecimal creditLimit, String applicantUsername) {
-        var applicant = applicantService.getByUsername(applicantUsername)
+        var applicant = applicantService.getApplicantByUsername(applicantUsername)
                 .orElseThrow(() -> new LoanManagementSystemException(String.format("Invalid applicant - %s", applicantUsername)));
 
         var newCreditFacility = new CreditFacilityEntity();
