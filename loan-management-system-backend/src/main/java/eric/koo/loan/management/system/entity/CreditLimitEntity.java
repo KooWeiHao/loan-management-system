@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -28,6 +29,10 @@ public class CreditLimitEntity extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CREDIT_LIMIT_ID")
     private Long creditLimitId;
+
+    @NotNull
+    @Column(name = "CREDIT_LIMIT")
+    private BigDecimal creditLimit;
 
     @NotNull
     @Column(name = "CREDIT_LIMIT_DATE")

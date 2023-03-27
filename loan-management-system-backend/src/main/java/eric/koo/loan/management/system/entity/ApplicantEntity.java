@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -42,7 +43,13 @@ public class ApplicantEntity extends AbstractEntity {
     @Column(name = "STATUS")
     private Status status;
 
-    enum Status {
+    @Column(name = "APPROVED_BY")
+    private String approvedBy;
+
+    @Column(name = "APPROVED_DATE")
+    private LocalDateTime approvedDate;
+
+    public enum Status {
         PROCESSING,
         APPROVED
     }
