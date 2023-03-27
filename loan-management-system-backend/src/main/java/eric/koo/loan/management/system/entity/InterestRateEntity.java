@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,6 +39,17 @@ public class InterestRateEntity extends AbstractEntity {
     @NotNull
     @Column(name = "INTEREST_RATE_DATE")
     private LocalDate interestRateDate;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TYPE")
+    private Type type;
+
+    public enum Type {
+        FULL_PAYMENT,
+        PARTIAL_PAYMENT_ONE_YEAR,
+        PARTIAL_PAYMENT_TWO_YEARS
+    }
 
     @Override
     public boolean equals(Object o) {

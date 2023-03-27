@@ -58,12 +58,12 @@ public class LoanEntity extends AbstractEntity {
     private Status status;
 
     @NotNull
-    @Column(name = "START_DATE")
-    private LocalDateTime startDate;
+    @Column(name = "FIRST_PAYMENT_DATE")
+    private LocalDateTime firstPaymentDate;
 
     @NotNull
-    @Column(name = "END_DATE")
-    private LocalDateTime endDate;
+    @Column(name = "LAST_PAYMENT_DATE")
+    private LocalDateTime lastPaymentDate;
 
     @Column(name = "APPROVED_BY")
     private String approvedBy;
@@ -71,7 +71,7 @@ public class LoanEntity extends AbstractEntity {
     @Column(name = "APPROVED_DATE")
     private LocalDateTime approvedDate;
 
-    enum Type {
+    public enum Type {
         HOME,
         CAR
     }

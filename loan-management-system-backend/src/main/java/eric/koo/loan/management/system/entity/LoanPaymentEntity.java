@@ -37,12 +37,8 @@ public class LoanPaymentEntity extends AbstractEntity {
     private LoanEntity loan;
 
     @NotNull
-    @Column(name = "GROSS_AMOUNT")
-    private BigDecimal grossAmount;
-
-    @NotNull
-    @Column(name = "NET_AMOUNT")
-    private BigDecimal netAmount;
+    @Column(name = "amount")
+    private BigDecimal amount;
 
     @Override
     public boolean equals(Object o) {
