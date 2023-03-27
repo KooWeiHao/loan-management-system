@@ -6,14 +6,12 @@ import eric.koo.loan.management.system.entity.CreditFacilityEntity;
 import eric.koo.loan.management.system.service.CreditFacilityService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/credit-facility")
@@ -40,9 +38,19 @@ class CreditFacilityController {
         return createCreditFacilityResponseModel(approvedCreditFacility);
     }
 
+    @GetMapping
+    List<CreditFacilityResponseModel> findAllCreditFacility() {
+        var creditFacilities = creditFacilityService.findAllCreditFacility();
+
+        return creditFacilities.stream()
+                .map(this::createCreditFacilityResponseModel)
+                .collect(Collectors.toList());
+    }
+
     private CreditFacilityResponseModel createCreditFacilityResponseModel(CreditFacilityEntity creditFacility) {
         var creditFacilityResponse = new CreditFacilityResponseModel();
         BeanUtils.copyProperties(creditFacility, creditFacilityResponse);
+        creditFacilityResponse.setApplicantUsername(creditFacility.getApplicant().getUsername());
 
         return creditFacilityResponse;
     }

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 class CreditFacilityServiceImpl implements CreditFacilityService {
@@ -58,5 +59,11 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
         creditFacility.setApprovedDate(LocalDateTime.now());
 
         return creditFacilityRepository.save(creditFacility);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<CreditFacilityEntity> findAllCreditFacility() {
+        return creditFacilityRepository.findAll();
     }
 }

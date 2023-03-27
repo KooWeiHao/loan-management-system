@@ -33,7 +33,7 @@ class SecurityConfiguration {
                 .antMatchers("/error").permitAll()
                 .antMatchers(appendApiPathPrefix("/auth/**")).permitAll()
                 .antMatchers(appendApiPathPrefix("/credit-facility/approve")).hasRole(Role.BANK_STAFF.name())
-                .anyRequest().hasRole(Role.APPLICANT.name())
+                .anyRequest().authenticated()
                 .and()
                 .build();
     }

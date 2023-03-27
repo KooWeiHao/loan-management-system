@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 public class CreditFacilityResponseModel {
     private Long creditFacilityId;
 
+    private String applicantUsername;
+
     private BigDecimal creditLimit;
 
     private CreditFacilityEntity.Status status;
