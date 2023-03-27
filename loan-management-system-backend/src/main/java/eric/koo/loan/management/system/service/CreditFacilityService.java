@@ -6,4 +6,5 @@ import java.math.BigDecimal;
 
 public interface CreditFacilityService {
     CreditFacilityEntity createCreditFacility(BigDecimal creditLimit, String applicantUsername);
+    CreditFacilityEntity approveCreditFacility(long creditFacilityId, String bankStaff);
 }

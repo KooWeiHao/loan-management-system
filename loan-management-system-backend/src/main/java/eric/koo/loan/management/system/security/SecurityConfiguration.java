@@ -32,6 +32,7 @@ class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/error").permitAll()
                 .antMatchers(appendApiPathPrefix("/auth/**")).permitAll()
+                .antMatchers(appendApiPathPrefix("/credit-facility/approve")).hasRole(Role.BANK_STAFF.name())
                 .anyRequest().hasRole(Role.APPLICANT.name())
                 .and()
                 .build();

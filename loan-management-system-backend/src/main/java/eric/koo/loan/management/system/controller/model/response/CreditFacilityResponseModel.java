@@ -5,13 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class CreditFacilityCreateResponseModel {
+public class CreditFacilityResponseModel {
     private Long creditFacilityId;
 
     private BigDecimal creditLimit;
 
     private CreditFacilityEntity.Status status;
+
+    private LocalDateTime createdDate;
+
+    private String approvedBy;
+
+    private LocalDateTime approvedDate;
 }
