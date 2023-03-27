@@ -30,15 +30,8 @@ class SecurityConfiguration {
                 .authenticationProvider(bankStaffAuthenticationProvider)
                 .authenticationProvider(applicantAuthenticationProvider)
                 .authorizeRequests()
-                .antMatchers(
-                        Stream.concat(
-                                // Public API
-                                Stream.of("/error"),
-
-                                // Application's Public API
-                                Stream.of("/auth/**").map(api -> apiPathPrefix + api)
-                        ).toArray(String[]::new)
-                ).permitAll()
+                .antMatchers("/error").permitAll()
+                .antMatchers(appendApiPathPrefix("/auth/**")).permitAll()
                 .anyRequest().hasRole(Role.APPLICANT.name())
                 .and()
                 .build();
@@ -47,5 +40,11 @@ class SecurityConfiguration {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    private String[] appendApiPathPrefix(String... apis) {
+        return Stream.of(apis)
+                .map(api -> apiPathPrefix + api)
+                .toArray(String[]::new);
     }
 }
