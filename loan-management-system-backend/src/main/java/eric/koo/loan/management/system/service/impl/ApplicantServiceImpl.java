@@ -1,9 +1,11 @@
 package eric.koo.loan.management.system.service.impl;
 
+import eric.koo.loan.management.system.entity.CreditFacilityEntity;
 import eric.koo.loan.management.system.exception.BadRequestException;
 import eric.koo.loan.management.system.entity.ApplicantEntity;
 import eric.koo.loan.management.system.repository.ApplicantRepository;
 import eric.koo.loan.management.system.service.ApplicantService;
+import eric.koo.loan.management.system.service.CreditLimitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,13 @@ class ApplicantServiceImpl implements ApplicantService {
 
     private final ApplicantRepository applicantRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CreditLimitService creditLimitService;
 
     @Autowired
-    ApplicantServiceImpl(ApplicantRepository applicantRepository, PasswordEncoder passwordEncoder) {
+    ApplicantServiceImpl(ApplicantRepository applicantRepository, PasswordEncoder passwordEncoder, CreditLimitService creditLimitService) {
         this.applicantRepository = applicantRepository;
         this.passwordEncoder = passwordEncoder;
+        this.creditLimitService = creditLimitService;
     }
 
     @Transactional(readOnly = true)
@@ -69,9 +73,14 @@ class ApplicantServiceImpl implements ApplicantService {
             throw new BadRequestException(String.format("Applicant has been approved - %s", applicantId));
         }
 
+        var newCreditFacility = new CreditFacilityEntity();
+        newCreditFacility.setApplicant(applicant);
+        newCreditFacility.setCreditLimit(creditLimitService.getLatestOrDefaultCreditLimit().getCreditLimit());
+
         applicant.setStatus(ApplicantEntity.Status.APPROVED);
         applicant.setApprovedBy(bankStaff);
         applicant.setApprovedDate(LocalDateTime.now());
+        applicant.setCreditFacility(newCreditFacility);
 
         return applicantRepository.save(applicant);
     }

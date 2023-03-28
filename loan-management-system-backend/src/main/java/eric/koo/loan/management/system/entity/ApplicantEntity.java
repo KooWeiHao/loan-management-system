@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -48,6 +50,9 @@ public class ApplicantEntity extends AbstractEntity {
 
     @Column(name = "APPROVED_DATE")
     private LocalDateTime approvedDate;
+
+    @OneToOne(mappedBy = "applicant", cascade = CascadeType.PERSIST)
+    private CreditFacilityEntity creditFacility;
 
     public enum Status {
         PROCESSING,
