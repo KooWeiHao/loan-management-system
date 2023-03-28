@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -53,9 +54,9 @@ class InterestRateServiceImpl implements InterestRateService {
 
     @Transactional
     @Override
-    public InterestRateEntity createInterestRate(BigDecimal interestRate, LocalDate interestRateDate, InterestRateEntity.Type type) {
+    public InterestRateEntity createInterestRate(BigDecimal interestRateInPercentage, LocalDate interestRateDate, InterestRateEntity.Type type) {
         var newInterestRate = new InterestRateEntity();
-        newInterestRate.setInterestRate(interestRate);
+        newInterestRate.setInterestRate(interestRateInPercentage.divide(BigDecimal.valueOf(100), 5, RoundingMode.HALF_UP));
         newInterestRate.setInterestRateDate(interestRateDate);
         newInterestRate.setType(type);
 

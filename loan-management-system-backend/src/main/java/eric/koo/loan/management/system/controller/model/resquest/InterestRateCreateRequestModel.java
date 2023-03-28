@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 public class InterestRateCreateRequestModel {
     @NotNull
-    private BigDecimal interestRate;
+    private BigDecimal interestRateInPercentage;
 
     @NotNull
     private LocalDate interestRateDate;

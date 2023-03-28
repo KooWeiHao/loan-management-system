@@ -28,7 +28,7 @@ class InterestRateController {
 
     @PostMapping
     InterestRateResponseModel createInterestRate(@Valid @RequestBody InterestRateCreateRequestModel interestRateCreateRequestModel) {
-        var interestRate = interestRateService.createInterestRate(interestRateCreateRequestModel.getInterestRate(), interestRateCreateRequestModel.getInterestRateDate(), interestRateCreateRequestModel.getType());
+        var interestRate = interestRateService.createInterestRate(interestRateCreateRequestModel.getInterestRateInPercentage(), interestRateCreateRequestModel.getInterestRateDate(), interestRateCreateRequestModel.getType());
 
         return createInterestRateResponseModel(interestRate);
     }
