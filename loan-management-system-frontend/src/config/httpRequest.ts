@@ -1,16 +1,17 @@
 import axios from "axios";
-import { Buffer } from "buffer";
+import { AuthStoredData } from "../store/interface/IAuthSlice";
 
 const httpRequest = axios.create({
     baseURL: process.env.REACT_APP_LOAN_MANAGEMENT_SYSTEM_BACKEND_API_PATH,
 });
 
 httpRequest.interceptors.request.use((config) => {
-    const tempBase64Credentials = Buffer.from(
-        "erickoo:password",
-        "utf8"
-    ).toString("base64");
-    config.headers.Authorization = `Basic ${tempBase64Credentials}`;
+    const user = sessionStorage.getItem("USER");
+
+    if (user) {
+        const { token } = <AuthStoredData>JSON.parse(user);
+        config.headers.Authorization = `Basic ${token}`;
+    }
 
     return config;
 });
@@ -22,8 +23,7 @@ httpRequest.interceptors.response.use(
     },
     (error) => {
         // return message from a response of API call, or error message from axios, or the error itself in string, if the API call is failed.
-        const message =
-            error.response?.data?.message || error.message || error.toString();
+        const message = error.response?.data?.message || error.message || error.toString();
 
         return Promise.reject(message);
     }
