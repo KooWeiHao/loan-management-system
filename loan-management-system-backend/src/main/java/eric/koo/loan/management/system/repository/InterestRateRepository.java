@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface InterestRateRepository extends JpaRepository<InterestRateEntity, Long> {
-    Optional<InterestRateEntity> getFirstByTypeAndInterestRateDateLessThanEqualOrderByInterestRateDate(InterestRateEntity.Type type, LocalDate data);
+    Optional<InterestRateEntity> getFirstByTypeAndInterestRateDateLessThanEqualOrderByInterestRateDateDescCreatedDateDesc(InterestRateEntity.Type type, LocalDate data);
 }

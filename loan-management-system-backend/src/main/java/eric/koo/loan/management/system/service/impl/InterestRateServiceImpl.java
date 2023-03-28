@@ -34,7 +34,7 @@ class InterestRateServiceImpl implements InterestRateService {
     @Transactional(readOnly = true)
     @Override
     public InterestRateEntity getLatestOrDefaultInterestRateByType(InterestRateEntity.Type type) {
-        return interestRateRepository.getFirstByTypeAndInterestRateDateLessThanEqualOrderByInterestRateDate(type, LocalDate.now())
+        return interestRateRepository.getFirstByTypeAndInterestRateDateLessThanEqualOrderByInterestRateDateDescCreatedDateDesc(type, LocalDate.now())
                 .orElseGet(() -> {
                     var defaultInterestRateMap = Map.of(
                             InterestRateEntity.Type.FULL_PAYMENT, defaultFullPaymentInterestRate,
@@ -49,5 +49,16 @@ class InterestRateServiceImpl implements InterestRateService {
 
                     return interestRate;
                 });
+    }
+
+    @Transactional
+    @Override
+    public InterestRateEntity createInterestRate(BigDecimal interestRate, LocalDate interestRateDate, InterestRateEntity.Type type) {
+        var newInterestRate = new InterestRateEntity();
+        newInterestRate.setInterestRate(interestRate);
+        newInterestRate.setInterestRateDate(interestRateDate);
+        newInterestRate.setType(type);
+
+        return interestRateRepository.save(newInterestRate);
     }
 }
