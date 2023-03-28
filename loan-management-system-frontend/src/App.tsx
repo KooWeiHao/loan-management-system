@@ -1,5 +1,7 @@
+import Route from "./route/Route";
+
 const App = () => {
-    return <h1 className="text-danger">Loan Management System</h1>;
+    return <Route />;
 };
 
 export default App;
