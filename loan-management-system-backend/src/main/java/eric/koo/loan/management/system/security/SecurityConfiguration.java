@@ -20,6 +20,18 @@ class SecurityConfiguration {
     @Value("${loan.management.system.api.path.prefix}")
     private String apiPathPrefix;
 
+    @Value("${loan.management.system.public.api}")
+    private String[] publicApi;
+
+    @Value("${loan.management.system.application.public.api}")
+    private String[] applicationPublicApi;
+
+    @Value("${loan.management.system.applicant.post.api}")
+    private String[] applicantPostApi;
+
+    @Value("${loan.management.system.bank.staff.post.api}")
+    private String[] bankStaffPostApi;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPoint authenticationEntryPoint, AuthenticationProvider applicantAuthenticationProvider, AuthenticationProvider bankStaffAuthenticationProvider) throws Exception {
         return http.cors()
@@ -33,10 +45,10 @@ class SecurityConfiguration {
                 .authenticationProvider(bankStaffAuthenticationProvider)
                 .authenticationProvider(applicantAuthenticationProvider)
                 .authorizeRequests()
-                .antMatchers("/error").permitAll()
-                .antMatchers(appendApiPathPrefix("/auth/**")).permitAll()
-                .antMatchers(HttpMethod.POST, appendApiPathPrefix("/credit-facility")).hasRole(Role.APPLICANT.name())
-                .antMatchers(appendApiPathPrefix("/credit-facility/approve")).hasRole(Role.BANK_STAFF.name())
+                .antMatchers(publicApi).permitAll()
+                .antMatchers(appendApiPathPrefix(applicationPublicApi)).permitAll()
+                .antMatchers(HttpMethod.POST, appendApiPathPrefix(applicantPostApi)).hasRole(Role.APPLICANT.name())
+                .antMatchers(HttpMethod.POST, appendApiPathPrefix(bankStaffPostApi)).hasRole(Role.BANK_STAFF.name())
                 .anyRequest().authenticated()
                 .and()
                 .build();
@@ -47,7 +59,7 @@ class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    private String[] appendApiPathPrefix(String... apis) {
+    private String[] appendApiPathPrefix(String[] apis) {
         return Stream.of(apis)
                 .map(api -> apiPathPrefix + api)
                 .toArray(String[]::new);
