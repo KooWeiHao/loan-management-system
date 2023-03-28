@@ -27,7 +27,7 @@ class CreditLimitServiceImpl implements CreditLimitService {
     @Transactional(readOnly = true)
     @Override
     public CreditLimitEntity getLatestOrDefaultCreditLimit() {
-        return creditLimitRepository.getFirstByCreditLimitDateLessThanEqualOrderByCreditLimitDateDesc(LocalDate.now())
+        return creditLimitRepository.getFirstByCreditLimitDateLessThanEqualOrderByCreditLimitDateDescCreatedDateDesc(LocalDate.now())
                 .orElseGet(() -> {
                     var creditLimit = new CreditLimitEntity();
                     creditLimit.setCreditLimitDate(LocalDate.now());
@@ -35,5 +35,15 @@ class CreditLimitServiceImpl implements CreditLimitService {
 
                     return creditLimit;
                 });
+    }
+
+    @Transactional
+    @Override
+    public CreditLimitEntity createCreditLimit(BigDecimal creditLimit, LocalDate creditLimitDate) {
+        var newCreditLimit = new CreditLimitEntity();
+        newCreditLimit.setCreditLimit(creditLimit);
+        newCreditLimit.setCreditLimitDate(creditLimitDate);
+
+        return creditLimitRepository.save(newCreditLimit);
     }
 }

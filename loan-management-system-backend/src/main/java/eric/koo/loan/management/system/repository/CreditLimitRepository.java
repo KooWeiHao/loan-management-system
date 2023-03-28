@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface CreditLimitRepository extends JpaRepository<CreditLimitEntity, Long> {
-    Optional<CreditLimitEntity> getFirstByCreditLimitDateLessThanEqualOrderByCreditLimitDateDesc(LocalDate date);
+    Optional<CreditLimitEntity> getFirstByCreditLimitDateLessThanEqualOrderByCreditLimitDateDescCreatedDateDesc(LocalDate date);
 }
