@@ -59,13 +59,7 @@
             "error",
             {
                 "props": true,
-                "ignorePropertyModificationsFor": ["draft"]
-            }
-        ],
-        "no-underscore-dangle": [
-            "error",
-            {
-                "allow": ["_metadata"]
+                "ignorePropertyModificationsFor": ["config"]
             }
         ],
         "react/require-default-props": "off"
