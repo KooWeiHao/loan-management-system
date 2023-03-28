@@ -65,6 +65,10 @@ class ApplicantServiceImpl implements ApplicantService {
         var applicant = applicantRepository.findById(applicantId)
                 .orElseThrow(() -> new BadRequestException(String.format("Invalid applicant - %s", applicantId)));
 
+        if(applicant.getStatus() == ApplicantEntity.Status.APPROVED) {
+            throw new BadRequestException(String.format("Applicant has been approved - %s", applicantId));
+        }
+
         applicant.setStatus(ApplicantEntity.Status.APPROVED);
         applicant.setApprovedBy(bankStaff);
         applicant.setApprovedDate(LocalDateTime.now());

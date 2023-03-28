@@ -41,7 +41,7 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
         newCreditFacility.setApplicant(applicant);
         newCreditFacility.setCreditLimit(creditLimitService.getLatestOrDefaultCreditLimit().getCreditLimit());
 
-        return newCreditFacility;
+        return creditFacilityRepository.save(newCreditFacility);
     }
 
     @Transactional(readOnly = true)

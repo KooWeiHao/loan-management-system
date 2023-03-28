@@ -24,7 +24,7 @@ class ApplicantController {
         this.applicantService = applicantService;
         this.creditFacilityService = creditFacilityService;
     }
-    
+
     @PostMapping("/approve")
     ApplicantResponseModel approveApplicant(@RequestParam("applicantId") Long applicantId, Principal principal) {
         var applicant = applicantService.approveApplicant(applicantId, principal.getName());

@@ -7,4 +7,5 @@ import java.math.BigDecimal;
 
 public interface LoanService {
     LoanEntity createLoan(BigDecimal amount, LoanEntity.Type type, InterestRateEntity.Type paymentType, String applicantUsername);
+    LoanEntity approveLoan(long loanId, String bankStaff);
 }

@@ -87,4 +87,21 @@ class LoanServiceImpl implements LoanService {
 
         return loanRepository.save(newLoan);
     }
+
+    @Transactional
+    @Override
+    public LoanEntity approveLoan(long loanId, String bankStaff) {
+        var loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new BadRequestException(String.format("Invalid loan - %s", loanId)));
+
+        if(loan.getStatus() != LoanEntity.Status.PROCESSING) {
+            throw new BadRequestException(String.format("Only new loan can be approved - %s", loanId));
+        }
+
+        loan.setStatus(LoanEntity.Status.ACTIVE);
+        loan.setApprovedBy(bankStaff);
+        loan.setApprovedDate(LocalDateTime.now());
+
+        return loanRepository.save(loan);
+    }
 }

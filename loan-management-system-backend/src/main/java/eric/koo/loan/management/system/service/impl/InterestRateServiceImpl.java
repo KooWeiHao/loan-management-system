@@ -6,6 +6,7 @@ import eric.koo.loan.management.system.service.InterestRateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ class InterestRateServiceImpl implements InterestRateService {
         this.interestRateRepository = interestRateRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public InterestRateEntity getLatestOrDefaultInterestRateByType(InterestRateEntity.Type type) {
         return interestRateRepository.getFirstByTypeAndInterestRateDateLessThanEqualOrderByInterestRateDate(type, LocalDate.now())
