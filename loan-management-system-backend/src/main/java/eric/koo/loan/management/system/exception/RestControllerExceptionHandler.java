@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 class RestControllerExceptionHandler {
-    
+
     @ExceptionHandler(BadRequestException.class)
     ErrorResponseModel handleBadRequestException(BadRequestException exception, HttpServletRequest request) {
         return new ErrorResponseModel(exception.getMessage(), request.getServletPath());

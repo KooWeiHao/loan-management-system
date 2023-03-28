@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Service
 class LoanServiceImpl implements LoanService {
@@ -33,6 +34,12 @@ class LoanServiceImpl implements LoanService {
         this.interestRateService = interestRateService;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<LoanEntity> getLoanByLoanId(long loanId) {
+        return loanRepository.findById(loanId);
+    }
+
     @Transactional
     @Override
     public LoanEntity createLoan(BigDecimal amount, LoanEntity.Type type, InterestRateEntity.Type paymentType, String applicantUsername) {
@@ -42,18 +49,16 @@ class LoanServiceImpl implements LoanService {
         var creditFacility = creditFacilityService.getCreditFacilityByApplicantUsername(applicant.getUsername())
                 .orElseThrow(() -> new BadRequestException(String.format("Credit facility not found - %s", applicant.getUsername())));
 
-        var totalExistingLoanPrincipalAmount = loanRepository.findByCreditFacilityCreditFacilityId(creditFacility.getCreditFacilityId()).stream()
+        var totalCurrentLoanPrincipalAmount = loanRepository.findByCreditFacilityCreditFacilityId(creditFacility.getCreditFacilityId()).stream()
                 .map(LoanEntity::getPrincipalAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if(creditFacility.getCreditLimit()
-                .compareTo(totalExistingLoanPrincipalAmount.add(amount)) < 0
+                .compareTo(totalCurrentLoanPrincipalAmount.add(amount)) < 0
         ) {
             throw new BadRequestException(String.format(
-                    "Total principal amount is greater than credit limit - {creditLimit: %s, existingPrincipalAmount: %s, requestedAmount: %s}",
-                    creditFacility.getCreditLimit(),
-                    totalExistingLoanPrincipalAmount,
-                    amount
+                    "Total principal amount is greater than credit limit - {creditLimit: %s, currentPrincipalAmount: %s, requestedAmount: %s}",
+                    creditFacility.getCreditLimit(), totalCurrentLoanPrincipalAmount, amount
             ));
         }
 

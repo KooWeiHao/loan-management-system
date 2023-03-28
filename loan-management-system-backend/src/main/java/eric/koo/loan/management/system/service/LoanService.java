@@ -4,8 +4,11 @@ import eric.koo.loan.management.system.entity.InterestRateEntity;
 import eric.koo.loan.management.system.entity.LoanEntity;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public interface LoanService {
+    Optional<LoanEntity> getLoanByLoanId(long loanId);
+
     LoanEntity createLoan(BigDecimal amount, LoanEntity.Type type, InterestRateEntity.Type paymentType, String applicantUsername);
     LoanEntity approveLoan(long loanId, String bankStaff);
 }

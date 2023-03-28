@@ -37,6 +37,11 @@ class CreditFacilityServiceImpl implements CreditFacilityService {
             throw new BadRequestException(String.format("Only approved applicant can open a credit facility - %s", applicantId));
         }
 
+        var creditFacility = creditFacilityRepository.getByApplicantUsername(applicant.getUsername());
+        if(creditFacility.isPresent()) {
+            throw new BadRequestException(String.format("Credit facility has been opened - %s", applicantId));
+        }
+
         var newCreditFacility = new CreditFacilityEntity();
         newCreditFacility.setApplicant(applicant);
         newCreditFacility.setCreditLimit(creditLimitService.getLatestOrDefaultCreditLimit().getCreditLimit());
