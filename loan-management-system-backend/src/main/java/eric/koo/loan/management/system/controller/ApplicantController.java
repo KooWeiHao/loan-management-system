@@ -24,7 +24,7 @@ class ApplicantController {
     }
 
     // TODO - Design the response model
-    @PostMapping
+    @PostMapping("/approve")
     void approveApplicant(@RequestParam("applicantId") Long applicantId, Principal principal) {
         applicantService.approveApplicant(applicantId, principal.getName());
         creditFacilityService.createCreditFacility(applicantId, principal.getName());

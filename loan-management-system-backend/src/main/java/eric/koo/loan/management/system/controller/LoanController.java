@@ -1,7 +1,9 @@
 package eric.koo.loan.management.system.controller;
 
+import eric.koo.loan.management.system.controller.model.response.LoanResponseModel;
 import eric.koo.loan.management.system.controller.model.resquest.LoanCreateRequestModel;
 import eric.koo.loan.management.system.service.LoanService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +25,13 @@ class LoanController {
     }
 
     @PostMapping
-    void createLoan(@Valid @RequestBody LoanCreateRequestModel loanCreateRequestModel, Principal principal) {
-        loanService.createLoan(loanCreateRequestModel.getAmount(), loanCreateRequestModel.getType(), loanCreateRequestModel.getPaymentType(), principal.getName());
+    LoanResponseModel createLoan(@Valid @RequestBody LoanCreateRequestModel loanCreateRequestModel, Principal principal) {
+        var newLoan = loanService.createLoan(loanCreateRequestModel.getAmount(), loanCreateRequestModel.getType(), loanCreateRequestModel.getPaymentType(), principal.getName());
+
+        var loanResponse = new LoanResponseModel();
+        BeanUtils.copyProperties(newLoan, loanResponse);
+        loanResponse.setApplicantUsername(newLoan.getCreditFacility().getApplicant().getUsername());
+
+        return loanResponse;
     }
 }

@@ -45,8 +45,8 @@ public class LoanEntity extends AbstractEntity {
     private Type type;
 
     @NotNull
-    @Column(name = "PRINCIPAL")
-    private BigDecimal principal;
+    @Column(name = "PRINCIPAL_AMOUNT")
+    private BigDecimal principalAmount;
 
     @NotNull
     @Column(name = "INTEREST_RATE")
