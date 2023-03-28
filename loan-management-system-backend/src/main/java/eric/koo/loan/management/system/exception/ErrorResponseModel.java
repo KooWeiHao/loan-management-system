@@ -2,6 +2,7 @@ package eric.koo.loan.management.system.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,7 @@ class ErrorResponseModel {
     private String message;
     private String path;
 
-    ErrorResponseModel(int status, String message, String path) {
-        this(status, LocalDateTime.now(), message, path);
+    ErrorResponseModel(String message, String path) {
+        this(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), message, path);
     }
 }
