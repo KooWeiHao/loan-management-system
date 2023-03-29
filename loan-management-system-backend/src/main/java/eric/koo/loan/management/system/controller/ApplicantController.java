@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/applicant")
@@ -40,6 +42,15 @@ class ApplicantController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Invalid applicant - %s", principal.getName())));
 
         return createApplicantResponse(applicant);
+    }
+
+    @GetMapping("/all")
+    List<ApplicantResponseModel> getAllApplicant() {
+        var applicants = applicantService.findAllApplicant();
+
+        return applicants.stream()
+                .map(this::createApplicantResponse)
+                .collect(Collectors.toList());
     }
 
     private ApplicantResponseModel createApplicantResponse(ApplicantEntity applicant) {

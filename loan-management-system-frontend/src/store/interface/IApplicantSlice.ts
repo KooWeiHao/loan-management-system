@@ -19,8 +19,11 @@ interface ApplicantState {
 
 interface ApplicantSlice {
     currentApplicant?: ApplicantState;
+    applicants: ApplicantState[];
 
     getApplicant: () => Promise<ApplicantState>;
+    findAllApplicant: () => Promise<ApplicantState[]>;
+    approveApplicant: (applicantId: number) => Promise<ApplicantState>;
 }
 
 export type { ApplicantState };

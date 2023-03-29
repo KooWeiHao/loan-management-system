@@ -41,6 +41,7 @@ class CreditLimitServiceImpl implements CreditLimitService {
                 .orElse(getDefaultCreditLimit());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CreditLimitEntity> findAllCreditLimit() {
         return creditLimitRepository.findAllByOrderByCreditLimitDateDescCreatedDateDesc();

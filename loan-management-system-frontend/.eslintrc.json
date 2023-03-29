@@ -59,7 +59,7 @@
             "error",
             {
                 "props": true,
-                "ignorePropertyModificationsFor": ["config"]
+                "ignorePropertyModificationsFor": ["config", "draft"]
             }
         ],
         "react/require-default-props": "off",

@@ -1,4 +1,5 @@
 import { StateCreator } from "zustand";
+import produce from "immer";
 import CreditLimitSlice, { CreditLimitState } from "../interface/ICreditLimitSlice";
 import httpRequest from "../../config/httpRequest";
 
@@ -54,7 +55,16 @@ const createCreditLimitSlice: StateCreator<CreditLimitSlice, [["zustand/devtools
         };
 
         return httpRequest.post<void, CreditLimitState>("/credit-limit", data).then((response) => {
-            getState().findAllCreditLimit();
+            setState(
+                {
+                    creditLimits: produce(getState().creditLimits, (draft) => {
+                        draft.unshift(response);
+                    }),
+                },
+                false,
+                "createCreditLimit"
+            );
+
             return response;
         });
     },

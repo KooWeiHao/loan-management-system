@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,6 +46,12 @@ class ApplicantServiceImpl implements ApplicantService {
     public Optional<ApplicantEntity> getApplicantByUsernameAndPassword(String username, String password) {
         return applicantRepository.getByUsername(username)
                 .filter(applicant -> passwordEncoder.matches(password, applicant.getPassword()));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ApplicantEntity> findAllApplicant() {
+        return applicantRepository.findAll();
     }
 
     @Transactional
