@@ -8,6 +8,8 @@ interface LoanPaymentSlice {
     loanPayments: LoanPaymentState[];
 
     addLoanPayment: (loanId: number, amount: number) => Promise<LoanPaymentState>;
+    findLoanPaymentByLoanId: (loanId: number) => Promise<LoanPaymentState[]>;
+    resetLoanPayments: () => void;
 }
 
 export type { LoanPaymentState };

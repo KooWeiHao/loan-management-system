@@ -22,6 +22,30 @@ const createLoanPaymentSlice: StateCreator<
             return response;
         });
     },
+
+    findLoanPaymentByLoanId: (loanId) => {
+        return httpRequest.get<void, LoanPaymentState[]>("/loan-payment", { params: { loanId } }).then((response) => {
+            setState(
+                {
+                    loanPayments: response,
+                },
+                false,
+                "findLoanPaymentByLoanId"
+            );
+
+            return response;
+        });
+    },
+
+    resetLoanPayments: () => {
+        setState(
+            {
+                loanPayments: [],
+            },
+            false,
+            "resetLoanPayments"
+        );
+    },
 });
 
 export default createLoanPaymentSlice;

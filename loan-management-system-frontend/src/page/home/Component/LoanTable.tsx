@@ -4,6 +4,7 @@ import moment from "moment/moment";
 import { LoanState, Status } from "../../../store/interface/ILoanSlice";
 import useStore from "../../../store/useStore";
 import LoanPaymentAddModel from "./LoanPaymentAddModel";
+import LoanPaymentViewModel from "../../../component/LoanPaymentViewModel";
 
 const LoanTable = () => {
     const { currentApplicantLoans, findLoan } = useStore((state) => ({
@@ -12,6 +13,7 @@ const LoanTable = () => {
     }));
 
     const [loan, setLoan] = useState<LoanState>();
+    const [loanId, setLoanId] = useState<number>();
 
     const [activeLoans, setActiveLoans] = useState<LoanState[]>([]);
     const [processingLoans, setProcessingLoans] = useState<LoanState[]>([]);
@@ -91,7 +93,9 @@ const LoanTable = () => {
                                     </td>
                                     <td>{moment(data.createdDate).format("yyyy-MM-DD HH:mm:ss")}</td>
                                     <td className="text-center">
-                                        <Button size="sm">View Payments</Button>
+                                        <Button size="sm" onClick={() => setLoanId(data.loanId)}>
+                                            View Payments
+                                        </Button>
                                     </td>
                                     <td className="text-center">
                                         <Button size="sm" onClick={() => setLoan(data)}>
@@ -133,7 +137,9 @@ const LoanTable = () => {
                                     </td>
                                     <td>{moment(data.createdDate).format("yyyy-MM-DD HH:mm:ss")}</td>
                                     <td className="text-center">
-                                        <Button size="sm">View Payments</Button>
+                                        <Button size="sm" onClick={() => setLoanId(data.loanId)}>
+                                            View Payments
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}
@@ -143,6 +149,7 @@ const LoanTable = () => {
             </Row>
 
             <LoanPaymentAddModel loan={loan} handleClose={() => setLoan(undefined)} />
+            <LoanPaymentViewModel loanId={loanId} handleClose={() => setLoanId(undefined)} />
         </>
     );
 };

@@ -3,11 +3,13 @@ import { Button, Col, Row, Table } from "react-bootstrap";
 import moment from "moment";
 import { LoanState, Status } from "../../../store/interface/ILoanSlice";
 import useStore from "../../../store/useStore";
+import LoanPaymentViewModel from "../../../component/LoanPaymentViewModel";
 
 const Loan = () => {
     const [activeLoans, setActiveLoans] = useState<LoanState[]>([]);
     const [newLoans, setNewLoans] = useState<LoanState[]>([]);
     const [paidLoans, setPaidLoans] = useState<LoanState[]>([]);
+    const [loanId, setLoanId] = useState<number>();
 
     const { loans, findAllLoan, approveLoan } = useStore((state) => ({
         loans: state.loans,
@@ -99,7 +101,9 @@ const Loan = () => {
                                     </td>
                                     <td>{moment(data.createdDate).format("yyyy-MM-DD HH:mm:ss")}</td>
                                     <td className="text-center">
-                                        <Button size="sm">View Payments</Button>
+                                        <Button size="sm" onClick={() => setLoanId(data.loanId)}>
+                                            View Payments
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}
@@ -138,7 +142,9 @@ const Loan = () => {
                                     </td>
                                     <td>{moment(data.createdDate).format("yyyy-MM-DD HH:mm:ss")}</td>
                                     <td className="text-center">
-                                        <Button size="sm">View Payments</Button>
+                                        <Button size="sm" onClick={() => setLoanId(data.loanId)}>
+                                            View Payments
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}
@@ -146,6 +152,8 @@ const Loan = () => {
                     </Table>
                 </Col>
             </Row>
+
+            <LoanPaymentViewModel loanId={loanId} handleClose={() => setLoanId(undefined)} />
         </>
     );
 };
