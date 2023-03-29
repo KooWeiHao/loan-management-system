@@ -28,9 +28,7 @@ const RegisterForm = () => {
                 .then(() => {
                     navigate("/login");
                 })
-                .catch((error) => {
-                    toast.error(error);
-
+                .catch(() => {
                     formikHelpers.setSubmitting(false);
                 });
         },

@@ -4,6 +4,7 @@ import eric.koo.loan.management.system.entity.ApplicantEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,5 +20,13 @@ public class ApplicantResponseModel {
 
     private LocalDateTime approvedDate;
 
-    private Long creditFacilityId;
+    private CreditFacilityModel creditFacility;
+
+    @Getter
+    @Setter
+    public static class CreditFacilityModel {
+        private Long creditFacilityId;
+
+        private BigDecimal creditLimit;
+    }
 }

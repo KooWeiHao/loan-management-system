@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import { AuthStoredData } from "../store/interface/IAuthSlice";
 
 const httpRequest = axios.create({
@@ -24,6 +25,8 @@ httpRequest.interceptors.response.use(
     (error) => {
         // return message from a response of API call, or error message from axios, or the error itself in string, if the API call is failed.
         const message = error.response?.data?.message || error.message || error.toString();
+
+        toast.error(message);
 
         return Promise.reject(message);
     }

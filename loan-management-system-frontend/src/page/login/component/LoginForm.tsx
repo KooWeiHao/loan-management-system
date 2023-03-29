@@ -33,9 +33,7 @@ const LoginForm = () => {
                 .then(() => {
                     navigate(targetPath);
                 })
-                .catch((error) => {
-                    toast.error(error);
-
+                .catch(() => {
                     formikHelpers.setSubmitting(false);
                 });
         },

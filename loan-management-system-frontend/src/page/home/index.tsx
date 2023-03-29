@@ -1,12 +1,31 @@
+import { useEffect } from "react";
 import useTitle from "../../hook/useTitle";
 import AppLayout from "../../layout/AppLayout";
+import useStore from "../../store/useStore";
+import { Status } from "../../store/interface/IApplicantSlice";
 
 const HomePage = () => {
     useTitle("Home");
 
+    const { applicant, getApplicant } = useStore((state) => ({
+        applicant: state.applicant,
+        getApplicant: state.getApplicant,
+    }));
+
+    useEffect(() => {
+        getApplicant();
+    }, []);
+
     return (
         <AppLayout>
-            <h1>Applicant</h1>
+            {applicant?.status === Status.PROCESSING ? (
+                <>
+                    <h3>Welcome to Loan Management System.</h3>
+                    <p>Please be patience. Our team is reviewing your account</p>
+                </>
+            ) : (
+                <>Credit Limit & Loan</>
+            )}
         </AppLayout>
     );
 };
