@@ -8,7 +8,7 @@ const HomePage = () => {
     useTitle("Home");
 
     const { applicant, getApplicant } = useStore((state) => ({
-        applicant: state.applicant,
+        applicant: state.currentApplicant,
         getApplicant: state.getApplicant,
     }));
 

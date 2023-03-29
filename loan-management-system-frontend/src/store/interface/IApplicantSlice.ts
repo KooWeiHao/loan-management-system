@@ -18,7 +18,7 @@ interface ApplicantState {
 }
 
 interface ApplicantSlice {
-    applicant?: ApplicantState;
+    currentApplicant?: ApplicantState;
 
     getApplicant: () => Promise<ApplicantState>;
 }

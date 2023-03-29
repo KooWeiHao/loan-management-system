@@ -89,6 +89,12 @@ const createAuthSlice: StateCreator<AuthSlice, [["zustand/devtools", never]]> = 
                     "setAuthState"
                 );
             }
+
+            setState({
+                auth: {
+                    status: Status.UNAUTHENTICATED,
+                },
+            });
         }
     },
 });
