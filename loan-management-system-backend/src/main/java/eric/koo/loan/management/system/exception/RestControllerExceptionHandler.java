@@ -26,7 +26,7 @@ class RestControllerExceptionHandler {
     ErrorResponseModel handleMethodArgumentNotValidException(MethodArgumentNotValidException exception, HttpServletRequest request) {
         var fieldError = exception.getBindingResult().getFieldError();
         Assert.notNull(fieldError, "Error must not be null!");
-        var message = String.format("Required parameter '%s' is not present", fieldError.getField());
+        var message = String.format("%s %s", fieldError.getField(), fieldError.getDefaultMessage());
 
         return new ErrorResponseModel(message, request.getServletPath());
     }
