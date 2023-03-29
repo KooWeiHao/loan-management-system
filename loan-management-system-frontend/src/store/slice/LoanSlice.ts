@@ -21,6 +21,25 @@ const createLoanSLice: StateCreator<LoanSlice, [["zustand/devtools", never]]> = 
         });
     },
 
+    getLoanByLoanId: (loanId) => {
+        return httpRequest.get<void, LoanState>(`loan/${loanId}`).then((response) => {
+            setState(
+                {
+                    currentApplicantLoans: produce(getState().currentApplicantLoans, (draft) => {
+                        const index = draft.findIndex((loan) => loan.loanId === response.loanId);
+                        if (index !== -1) {
+                            draft[index] = response;
+                        }
+                    }),
+                },
+                false,
+                "getLoanByLoanId"
+            );
+
+            return response;
+        });
+    },
+
     findAllLoan: () => {
         return httpRequest.get<void, LoanState[]>("/loan/all").then((response) => {
             setState(

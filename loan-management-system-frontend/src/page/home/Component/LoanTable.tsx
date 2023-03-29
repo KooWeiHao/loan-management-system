@@ -3,12 +3,15 @@ import { Button, Col, Row, Table } from "react-bootstrap";
 import moment from "moment/moment";
 import { LoanState, Status } from "../../../store/interface/ILoanSlice";
 import useStore from "../../../store/useStore";
+import LoanPaymentAddModel from "./LoanPaymentAddModel";
 
 const LoanTable = () => {
     const { currentApplicantLoans, findLoan } = useStore((state) => ({
         currentApplicantLoans: state.currentApplicantLoans,
         findLoan: state.findLoan,
     }));
+
+    const [loan, setLoan] = useState<LoanState>();
 
     const [activeLoans, setActiveLoans] = useState<LoanState[]>([]);
     const [processingLoans, setProcessingLoans] = useState<LoanState[]>([]);
@@ -19,9 +22,9 @@ const LoanTable = () => {
     }, []);
 
     useEffect(() => {
-        setActiveLoans(currentApplicantLoans.filter((loan) => loan.status === Status.ACTIVE));
-        setProcessingLoans(currentApplicantLoans.filter((loan) => loan.status === Status.PROCESSING));
-        setPaidLoans(currentApplicantLoans.filter((loan) => loan.status === Status.PAID));
+        setActiveLoans(currentApplicantLoans.filter((l) => l.status === Status.ACTIVE));
+        setProcessingLoans(currentApplicantLoans.filter((l) => l.status === Status.PROCESSING));
+        setPaidLoans(currentApplicantLoans.filter((l) => l.status === Status.PAID));
     }, [currentApplicantLoans]);
 
     return (
@@ -34,7 +37,7 @@ const LoanTable = () => {
                             <tr>
                                 <th>No.</th>
                                 <th>Loan Id</th>
-                                <th>Amount</th>
+                                <th>Principal Amount</th>
                                 <th>Interest Rate(%)</th>
                                 <th>Period</th>
                                 <th>Created Date</th>
@@ -67,7 +70,7 @@ const LoanTable = () => {
                             <tr>
                                 <th>No.</th>
                                 <th>Loan Id</th>
-                                <th>Amount</th>
+                                <th>Principal Amount</th>
                                 <th>Interest Rate(%)</th>
                                 <th>Period</th>
                                 <th>Created Date</th>
@@ -91,7 +94,9 @@ const LoanTable = () => {
                                         <Button size="sm">View Payments</Button>
                                     </td>
                                     <td className="text-center">
-                                        <Button size="sm">Pay</Button>
+                                        <Button size="sm" onClick={() => setLoan(data)}>
+                                            Pay
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}
@@ -108,7 +113,7 @@ const LoanTable = () => {
                             <tr>
                                 <th>No.</th>
                                 <th>Loan Id</th>
-                                <th>Amount</th>
+                                <th>Principal Amount</th>
                                 <th>Interest Rate(%)</th>
                                 <th>Period</th>
                                 <th>Created Date</th>
@@ -136,6 +141,8 @@ const LoanTable = () => {
                     </Table>
                 </Col>
             </Row>
+
+            <LoanPaymentAddModel loan={loan} handleClose={() => setLoan(undefined)} />
         </>
     );
 };

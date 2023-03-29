@@ -10,14 +10,19 @@ import LoanSlice from "./interface/ILoanSlice";
 import createLoanSLice from "./slice/LoanSlice";
 import InterestRateSlice from "./interface/IInterestRateSlice";
 import createInterestRateSlice from "./slice/InterestRateSlice";
+import LoanPaymentSlice from "./interface/ILoanPaymentSlice";
+import createLoanPaymentSlice from "./slice/LoanPaymentSlice";
 
-const useStore = create<AuthSlice & ApplicantSlice & CreditLimitSlice & LoanSlice & InterestRateSlice>()(
+const useStore = create<
+    AuthSlice & ApplicantSlice & CreditLimitSlice & LoanSlice & InterestRateSlice & LoanPaymentSlice
+>()(
     devtools((...data) => ({
         ...createAuthSlice(...data),
         ...createApplicantSlice(...data),
         ...createCreditLimitSlice(...data),
         ...createLoanSLice(...data),
         ...createInterestRateSlice(...data),
+        ...createLoanPaymentSlice(...data),
     }))
 );
 

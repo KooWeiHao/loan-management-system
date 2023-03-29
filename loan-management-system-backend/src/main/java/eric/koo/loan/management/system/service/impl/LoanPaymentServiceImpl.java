@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 @Service
 class LoanPaymentServiceImpl implements LoanPaymentService {
@@ -64,5 +65,11 @@ class LoanPaymentServiceImpl implements LoanPaymentService {
         }
 
         return loanPayment;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<LoanPaymentEntity> findLoanPaymentByLoanId(long loanId) {
+        return loanPaymentRepository.findByLoanLoanId(loanId);
     }
 }

@@ -18,6 +18,10 @@ public class LoanResponseModel {
 
     private BigDecimal principalAmount;
 
+    private BigDecimal paidAmount;
+
+    private BigDecimal remainingAmount;
+
     private BigDecimal interestRate;
 
     private LoanEntity.Status status;

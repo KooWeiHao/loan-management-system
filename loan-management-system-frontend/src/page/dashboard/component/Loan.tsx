@@ -36,7 +36,7 @@ const Loan = () => {
                             <tr>
                                 <th>No.</th>
                                 <th>Loan Id</th>
-                                <th>Amount</th>
+                                <th>Principal Amount</th>
                                 <th>Interest Rate(%)</th>
                                 <th>Applicant</th>
                                 <th>Period</th>
@@ -77,7 +77,7 @@ const Loan = () => {
                             <tr>
                                 <th>No.</th>
                                 <th>Loan Id</th>
-                                <th>Amount</th>
+                                <th>Principal Amount</th>
                                 <th>Interest Rate(%)</th>
                                 <th>Applicant</th>
                                 <th>Period</th>
@@ -116,7 +116,7 @@ const Loan = () => {
                             <tr>
                                 <th>No.</th>
                                 <th>Loan Id</th>
-                                <th>Amount</th>
+                                <th>Principal Amount</th>
                                 <th>Interest Rate(%)</th>
                                 <th>Applicant</th>
                                 <th>Period</th>

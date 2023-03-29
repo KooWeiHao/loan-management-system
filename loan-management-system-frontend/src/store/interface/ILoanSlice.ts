@@ -20,6 +20,8 @@ interface LoanState {
     loanId: number;
     type: LoanType;
     principalAmount: number;
+    paidAmount: number;
+    remainingAmount: number;
     interestRate: number;
     status: Status;
     firstPaymentDate: Date;
@@ -33,6 +35,7 @@ interface LoanSlice {
     currentApplicantLoans: LoanState[];
     loans: LoanState[];
 
+    getLoanByLoanId: (loanId: number) => Promise<LoanState>;
     findLoan: () => Promise<LoanState[]>;
     findAllLoan: () => Promise<LoanState[]>;
     createLoan: (amount: number, type: LoanType, paymentType: PaymentType) => Promise<LoanState>;

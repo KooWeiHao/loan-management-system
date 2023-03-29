@@ -118,7 +118,7 @@ const LoanApplyModel = ({ show, handleClose }: LoanApplyModelModelProps) => {
                     <fieldset disabled={loanApplyForm.isSubmitting}>
                         <Form.Group controlId="amount" className="mb-3">
                             <Form.Label>
-                                <FontAwesomeIcon icon={faSackDollar} /> Credit Limit
+                                <FontAwesomeIcon icon={faSackDollar} /> Amount
                             </Form.Label>
                             <Form.Control
                                 type="number"
