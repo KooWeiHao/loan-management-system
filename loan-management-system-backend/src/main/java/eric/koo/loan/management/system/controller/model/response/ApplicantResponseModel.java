@@ -16,6 +16,8 @@ public class ApplicantResponseModel {
 
     private ApplicantEntity.Status status;
 
+    private LocalDateTime createdDate;
+
     private String approvedBy;
 
     private LocalDateTime approvedDate;

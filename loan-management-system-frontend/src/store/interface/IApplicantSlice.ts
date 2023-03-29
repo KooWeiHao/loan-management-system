@@ -12,8 +12,9 @@ interface ApplicantState {
     applicantId: number;
     username: string;
     status: Status;
+    createdDate: Date;
     approvedBy?: string;
-    approvedDate?: string;
+    approvedDate?: Date;
     creditFacility?: CreditFacility;
 }
 
