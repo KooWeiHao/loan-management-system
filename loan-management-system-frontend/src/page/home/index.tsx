@@ -1,9 +1,14 @@
 import useTitle from "../../hook/useTitle";
+import AppLayout from "../../layout/AppLayout";
 
 const HomePage = () => {
     useTitle("Home");
 
-    return <h1>Applicant</h1>;
+    return (
+        <AppLayout>
+            <h1>Applicant</h1>
+        </AppLayout>
+    );
 };
 
 export default HomePage;
