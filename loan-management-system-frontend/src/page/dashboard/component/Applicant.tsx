@@ -39,20 +39,19 @@ const Applicant = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {newApplicants.length > 0 &&
-                                newApplicants.map((data, i) => (
-                                    <tr key={data.applicantId}>
-                                        <td>{i + 1}</td>
-                                        <td>{data.applicantId}</td>
-                                        <td>{data.username}</td>
-                                        <td>{moment(data.createdDate).format("yyyy-MM-DD HH:mm:ss")}</td>
-                                        <td className="text-center">
-                                            <Button size="sm" onClick={() => approveApplicant(data.applicantId)}>
-                                                Approve
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
+                            {newApplicants.map((data, i) => (
+                                <tr key={data.applicantId}>
+                                    <td>{i + 1}</td>
+                                    <td>{data.applicantId}</td>
+                                    <td>{data.username}</td>
+                                    <td>{moment(data.createdDate).format("yyyy-MM-DD HH:mm:ss")}</td>
+                                    <td className="text-center">
+                                        <Button size="sm" onClick={() => approveApplicant(data.applicantId)}>
+                                            Approve
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </Table>
                 </Col>
@@ -75,19 +74,18 @@ const Applicant = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {approvedApplicants.length > 0 &&
-                                approvedApplicants.map((data, i) => (
-                                    <tr key={data.applicantId}>
-                                        <td>{i + 1}</td>
-                                        <td>{data.applicantId}</td>
-                                        <td>{data.username}</td>
-                                        <td>{moment(data.createdDate).format("yyyy-MM-DD HH:mm:ss")}</td>
-                                        <td>{data.creditFacility?.creditFacilityId}</td>
-                                        <td>{data.creditFacility?.creditLimit}</td>
-                                        <td>{data.approvedBy}</td>
-                                        <td>{moment(data.approvedDate).format("yyyy-MM-DD HH:mm:ss")}</td>
-                                    </tr>
-                                ))}
+                            {approvedApplicants.map((data, i) => (
+                                <tr key={data.applicantId}>
+                                    <td>{i + 1}</td>
+                                    <td>{data.applicantId}</td>
+                                    <td>{data.username}</td>
+                                    <td>{moment(data.createdDate).format("yyyy-MM-DD HH:mm:ss")}</td>
+                                    <td>{data.creditFacility?.creditFacilityId}</td>
+                                    <td>{data.creditFacility?.creditLimit}</td>
+                                    <td>{data.approvedBy}</td>
+                                    <td>{moment(data.approvedDate).format("yyyy-MM-DD HH:mm:ss")}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </Table>
                 </Col>

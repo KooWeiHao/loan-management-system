@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface LoanRepository extends JpaRepository<LoanEntity, Long> {
     List<LoanEntity> findByCreditFacilityCreditFacilityId(long creditFacilityId);
+    List<LoanEntity> findByCreditFacilityApplicantUsernameOrderByCreatedDateDesc(String applicantUsername);
 }

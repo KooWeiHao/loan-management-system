@@ -4,6 +4,7 @@ import AppLayout from "../../layout/AppLayout";
 import Applicant from "./component/Applicant";
 import CreditLimit from "./component/CreditLimit";
 import InterestRate from "./component/InterestRate";
+import Loan from "./component/Loan";
 
 const DashboardPage = () => {
     useTitle("Dashboard");
@@ -13,6 +14,11 @@ const DashboardPage = () => {
             key: "applicant",
             title: "Applicants",
             component: <Applicant />,
+        },
+        {
+            key: "loan",
+            title: "Loans",
+            component: <Loan />,
         },
         {
             key: "credit-limit",

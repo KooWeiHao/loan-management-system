@@ -1,10 +1,10 @@
-import { Button, Form, Modal, ModalFooter } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { useFormik, validateYupSchema, yupToFormErrors } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { ValidationError } from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt, faSackDollar } from "@fortawesome/free-solid-svg-icons";
 import useStore from "../../../store/useStore";
 
 interface CreditLimitAddForm {
@@ -32,6 +32,8 @@ const CreditLimitAddModel = ({ show, handleClose }: CreditLimitCreateModelProps)
             createCreditLimit(creditLimit, creditLimitDate)
                 .then(() => {
                     toast.success("Success");
+                    formikHelpers.resetForm();
+                    handleClose();
                 })
                 .finally(() => {
                     formikHelpers.setSubmitting(false);
@@ -46,7 +48,9 @@ const CreditLimitAddModel = ({ show, handleClose }: CreditLimitCreateModelProps)
                         .test("", "Invalid currency amount format", (value) => {
                             if (value) {
                                 const decimal = value.toString().split(".")[1];
-                                return decimal !== undefined && decimal.length <= 2;
+                                if (decimal) {
+                                    return decimal.length <= 2;
+                                }
                             }
                             return true;
                         })
@@ -71,8 +75,13 @@ const CreditLimitAddModel = ({ show, handleClose }: CreditLimitCreateModelProps)
         validateOnBlur: false,
     });
 
+    const onCLose = () => {
+        creditLimitAddForm.resetForm();
+        handleClose();
+    };
+
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={onCLose}>
             <Form onSubmit={creditLimitAddForm.handleSubmit} noValidate>
                 <Modal.Header closeButton>
                     <Modal.Title>Add Credit Limit</Modal.Title>
@@ -82,7 +91,7 @@ const CreditLimitAddModel = ({ show, handleClose }: CreditLimitCreateModelProps)
                     <fieldset disabled={creditLimitAddForm.isSubmitting}>
                         <Form.Group controlId="creditLimit" className="mb-3">
                             <Form.Label>
-                                <FontAwesomeIcon icon={faUser} /> Credit Limit
+                                <FontAwesomeIcon icon={faSackDollar} /> Credit Limit
                             </Form.Label>
                             <Form.Control
                                 type="number"
@@ -93,7 +102,7 @@ const CreditLimitAddModel = ({ show, handleClose }: CreditLimitCreateModelProps)
                         </Form.Group>
                         <Form.Group controlId="creditLimitDate" className="mb-3">
                             <Form.Label>
-                                <FontAwesomeIcon icon={faUser} /> Credit Limit Date
+                                <FontAwesomeIcon icon={faCalendarAlt} /> Credit Limit Date
                             </Form.Label>
                             <Form.Control
                                 type="date"
@@ -105,11 +114,11 @@ const CreditLimitAddModel = ({ show, handleClose }: CreditLimitCreateModelProps)
                     </fieldset>
                 </Modal.Body>
 
-                <ModalFooter>
+                <Modal.Footer>
                     <Button type="submit" disabled={creditLimitAddForm.isSubmitting}>
                         Add
                     </Button>
-                </ModalFooter>
+                </Modal.Footer>
             </Form>
         </Modal>
     );

@@ -22,7 +22,7 @@ const CreditLimit = () => {
         <>
             <Row className="d-flex align-items-center">
                 <Col md="6">
-                    <strong>Default Credit Limit:</strong> $ {defaultCreditLimit?.creditLimit}
+                    <strong>Default Credit Limit:</strong> ${defaultCreditLimit?.creditLimit}
                 </Col>
                 <Col md="6" className="text-end">
                     <Button onClick={() => setIsShow(true)}>Add Credit Limit</Button>

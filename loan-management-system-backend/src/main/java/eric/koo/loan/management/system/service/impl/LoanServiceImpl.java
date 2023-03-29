@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,18 @@ class LoanServiceImpl implements LoanService {
     @Override
     public Optional<LoanEntity> getLoanByLoanId(long loanId) {
         return loanRepository.findById(loanId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<LoanEntity> findLoanByApplicantUsername(String applicantUsername) {
+        return loanRepository.findByCreditFacilityApplicantUsernameOrderByCreatedDateDesc(applicantUsername);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<LoanEntity> findAllLoan() {
+        return loanRepository.findAll();
     }
 
     @Transactional

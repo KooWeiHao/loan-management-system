@@ -26,6 +26,8 @@ public class LoanResponseModel {
 
     private LocalDateTime lastPaymentDate;
 
+    private LocalDateTime createdDate;
+
     private String approvedBy;
 
     private LocalDateTime approvedDate;

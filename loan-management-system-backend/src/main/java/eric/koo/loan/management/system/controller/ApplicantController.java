@@ -45,7 +45,7 @@ class ApplicantController {
     }
 
     @GetMapping("/all")
-    List<ApplicantResponseModel> getAllApplicant() {
+    List<ApplicantResponseModel> findAllApplicant() {
         var applicants = applicantService.findAllApplicant();
 
         return applicants.stream()
