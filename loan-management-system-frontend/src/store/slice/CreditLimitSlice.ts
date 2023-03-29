@@ -55,7 +55,6 @@ const createCreditLimitSlice: StateCreator<CreditLimitSlice, [["zustand/devtools
 
         return httpRequest.post<void, CreditLimitState>("/credit-limit", data).then((response) => {
             getState().findAllCreditLimit();
-            getState().getLatestCreditLimit();
             return response;
         });
     },
