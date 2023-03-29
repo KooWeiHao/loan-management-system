@@ -1,2 +1,13 @@
 // Default Bootstrap configuration
 @import "~bootstrap/scss/bootstrap";
+
+.form-center{
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  align-content: center;
+  max-width: 400px;
+}

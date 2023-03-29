@@ -6,6 +6,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "../page/dashboard";
 import { Role } from "../store/interface/IAuthSlice";
 import PublicRoute from "./PublicRoute";
+import RegisterPage from "../page/register";
 
 export default () => {
     return (
@@ -15,6 +16,8 @@ export default () => {
 
             <Route element={<PublicRoute />}>
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/login-as-bank-staff" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
             </Route>
 
             <Route element={<ProtectedRoute role={Role.APPLICANT} />}>
