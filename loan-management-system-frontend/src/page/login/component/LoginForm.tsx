@@ -96,7 +96,9 @@ const LoginForm = () => {
 
                         <Row className="text-center">
                             <Col>
-                                <Button type="submit">Submit</Button>
+                                <Button type="submit" disabled={loginForm.isSubmitting}>
+                                    Submit
+                                </Button>
                             </Col>
                         </Row>
                     </fieldset>

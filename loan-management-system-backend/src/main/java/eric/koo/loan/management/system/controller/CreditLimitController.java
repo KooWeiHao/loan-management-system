@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("credit-limit")
@@ -37,6 +39,22 @@ class CreditLimitController {
         var creditLimit = creditLimitService.getLatestOrDefaultCreditLimit();
 
         return createCreditLimitResponseModel(creditLimit);
+    }
+
+    @GetMapping("/default")
+    CreditLimitResponseModel getDefaultCreditLimit() {
+        var creditLimit = creditLimitService.getDefaultCreditLimit();
+
+        return createCreditLimitResponseModel(creditLimit);
+    }
+
+    @GetMapping("/all")
+    List<CreditLimitResponseModel> findAllCreditLimit() {
+        var creditLimits = creditLimitService.findAllCreditLimit();
+
+        return creditLimits.stream()
+                .map(this::createCreditLimitResponseModel)
+                .collect(Collectors.toList());
     }
 
     private CreditLimitResponseModel createCreditLimitResponseModel(CreditLimitEntity creditLimit) {

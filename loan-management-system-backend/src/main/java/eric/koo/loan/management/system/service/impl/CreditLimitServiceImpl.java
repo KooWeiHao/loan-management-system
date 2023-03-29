@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 class CreditLimitServiceImpl implements CreditLimitService {
@@ -24,17 +25,25 @@ class CreditLimitServiceImpl implements CreditLimitService {
         this.creditLimitRepository = creditLimitRepository;
     }
 
+    @Override
+    public CreditLimitEntity getDefaultCreditLimit() {
+        var creditLimit = new CreditLimitEntity();
+        creditLimit.setCreditLimitDate(LocalDate.now());
+        creditLimit.setCreditLimit(defaultCreditLimit);
+
+        return creditLimit;
+    }
+
     @Transactional(readOnly = true)
     @Override
     public CreditLimitEntity getLatestOrDefaultCreditLimit() {
         return creditLimitRepository.getFirstByCreditLimitDateLessThanEqualOrderByCreditLimitDateDescCreatedDateDesc(LocalDate.now())
-                .orElseGet(() -> {
-                    var creditLimit = new CreditLimitEntity();
-                    creditLimit.setCreditLimitDate(LocalDate.now());
-                    creditLimit.setCreditLimit(defaultCreditLimit);
+                .orElse(getDefaultCreditLimit());
+    }
 
-                    return creditLimit;
-                });
+    @Override
+    public List<CreditLimitEntity> findAllCreditLimit() {
+        return creditLimitRepository.findAllByOrderByCreditLimitDateDescCreatedDateDesc();
     }
 
     @Transactional

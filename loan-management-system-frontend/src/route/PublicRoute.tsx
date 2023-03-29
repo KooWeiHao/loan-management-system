@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import useStore from "../store/useStore";
-import { Role } from "../store/interface/IAuthSlice";
+import { Role, Status } from "../store/interface/IAuthSlice";
 
 const PublicRoute = () => {
     const { auth, validateAuthenticationStatus } = useStore((state) => ({
@@ -12,6 +12,10 @@ const PublicRoute = () => {
     useEffect(() => {
         validateAuthenticationStatus();
     }, []);
+
+    if (auth.status === Status.PENDING_AUTHENTICATION) {
+        return <p>Loading...</p>;
+    }
 
     switch (auth.role) {
         case Role.APPLICANT:

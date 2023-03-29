@@ -17,17 +17,22 @@ const ProtectedRoute = ({ role }: ProtectedRouteProps) => {
         validateAuthenticationStatus();
     }, []);
 
-    // Redirect to login page if the user is unauthenticated
-    if (auth.status === Status.UNAUTHENTICATED) {
-        return <Navigate to="/login" />;
-    }
+    switch (auth.status) {
+        case Status.PENDING_AUTHENTICATION:
+            return <p>Loading...</p>;
 
-    if (auth.role !== role) {
-        return auth.role === Role.BANK_STAFF ? <Navigate to="/dashboard" /> : <Navigate to="/" />;
-    }
+        case Status.UNAUTHENTICATED:
+            return <Navigate to="/login" />;
 
-    // By default, redirect to the requested page if the user is BANK_STAFF
-    return <Outlet />;
+        case Status.AUTHENTICATED:
+        default:
+            if (auth.role !== role) {
+                return auth.role === Role.BANK_STAFF ? <Navigate to="/dashboard" /> : <Navigate to="/" />;
+            }
+
+            // By default, redirect to the requested page if the user is BANK_STAFF
+            return <Outlet />;
+    }
 };
 
 export default ProtectedRoute;

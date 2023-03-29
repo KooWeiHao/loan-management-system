@@ -7,9 +7,7 @@ const createApplicantSlice: StateCreator<ApplicantSlice, [["zustand/devtools", n
         return httpRequest.get<void, ApplicantState>("/applicant").then((response) => {
             setState(
                 {
-                    applicant: {
-                        ...response,
-                    },
+                    applicant: response,
                 },
                 false,
                 "getApplicant"

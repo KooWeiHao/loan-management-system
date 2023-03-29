@@ -5,7 +5,7 @@ import httpRequest from "../../config/httpRequest";
 
 const createAuthSlice: StateCreator<AuthSlice, [["zustand/devtools", never]]> = (setState, getState) => ({
     auth: {
-        status: Status.UNAUTHENTICATED,
+        status: Status.PENDING_AUTHENTICATION,
     },
 
     register: (username, password) => {
@@ -71,7 +71,7 @@ const createAuthSlice: StateCreator<AuthSlice, [["zustand/devtools", never]]> = 
     },
 
     validateAuthenticationStatus: () => {
-        if (getState().auth.status === Status.UNAUTHENTICATED) {
+        if (getState().auth.status === Status.PENDING_AUTHENTICATION) {
             const user = sessionStorage.getItem("USER");
 
             if (user) {

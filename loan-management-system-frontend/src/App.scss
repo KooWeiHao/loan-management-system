@@ -1,5 +1,11 @@
+$nav-pills-border-radius: 0;
+
 // Default Bootstrap configuration
 @import "~bootstrap/scss/bootstrap";
+
+.row+.row {
+  margin-top: 1rem;
+}
 
 .form-center{
   margin: auto;

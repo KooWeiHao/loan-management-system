@@ -4,6 +4,7 @@ enum Role {
 }
 
 enum Status {
+    PENDING_AUTHENTICATION,
     AUTHENTICATED,
     UNAUTHENTICATED,
 }
