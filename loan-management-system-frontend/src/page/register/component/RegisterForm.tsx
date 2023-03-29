@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
 import useStore from "../../../store/useStore";
 
 interface RegisterForm {
@@ -14,8 +15,16 @@ interface RegisterForm {
 }
 
 const RegisterForm = () => {
-    const register = useStore((state) => state.register);
+    const { register, latestCreditLimit, getLatestCreditLimit } = useStore((state) => ({
+        register: state.register,
+        latestCreditLimit: state.latestCreditLimit,
+        getLatestCreditLimit: state.getLatestCreditLimit,
+    }));
     const navigate = useNavigate();
+
+    useEffect(() => {
+        getLatestCreditLimit();
+    }, []);
 
     const registerForm = useFormik<RegisterForm>({
         initialValues: {
@@ -64,6 +73,10 @@ const RegisterForm = () => {
             </Card.Header>
 
             <Card.Body>
+                <Card.Title>Open account today</Card.Title>
+                <Card.Title as="h6" className="text-info">
+                    Credit Limit - ${latestCreditLimit?.creditLimit}
+                </Card.Title>
                 <Form onSubmit={registerForm.handleSubmit} noValidate>
                     <fieldset disabled={registerForm.isSubmitting}>
                         <Form.Group controlId="username" className="mb-3">
