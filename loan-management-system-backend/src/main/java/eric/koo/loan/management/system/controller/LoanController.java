@@ -5,12 +5,13 @@ import eric.koo.loan.management.system.controller.model.resquest.LoanCreateReque
 import eric.koo.loan.management.system.entity.LoanEntity;
 import eric.koo.loan.management.system.entity.LoanPaymentEntity;
 import eric.koo.loan.management.system.security.Role;
+import eric.koo.loan.management.system.security.RoleApplicant;
+import eric.koo.loan.management.system.security.RoleBankStaff;
 import eric.koo.loan.management.system.service.LoanPaymentService;
 import eric.koo.loan.management.system.service.LoanService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +42,7 @@ class LoanController {
         this.loanPaymentService = loanPaymentService;
     }
 
-    @Secured("ROLE_APPLICANT")
+    @RoleApplicant("createLoan")
     @PostMapping
     LoanResponseModel createLoan(@Valid @RequestBody LoanCreateRequestModel loanCreateRequestModel, Principal principal) {
         var loan = loanService.createLoan(loanCreateRequestModel.getAmount(), loanCreateRequestModel.getType(), loanCreateRequestModel.getPaymentType(), principal.getName());
@@ -49,7 +50,7 @@ class LoanController {
         return createLoanResponseModel(loan);
     }
 
-    @Secured("ROLE_BANK_STAFF")
+    @RoleBankStaff("approveLoan")
     @PostMapping("/approve")
     LoanResponseModel approveLoan(@RequestParam("loanId") Long loanId, Principal principal) {
         var loan = loanService.approveLoan(loanId, principal.getName());
@@ -57,7 +58,7 @@ class LoanController {
         return createLoanResponseModel(loan);
     }
 
-    @Secured("ROLE_APPLICANT")
+    @RoleApplicant("findLoanByUsername")
     @GetMapping
     List<LoanResponseModel> findLoanByUsername(Principal principal) {
         var loans = loanService.findLoanByApplicantUsername(principal.getName());
@@ -67,7 +68,7 @@ class LoanController {
                 .collect(Collectors.toList());
     }
 
-    @Secured("ROLE_BANK_STAFF")
+    @RoleBankStaff("findAllLoan")
     @GetMapping("/all")
     List<LoanResponseModel> findAllLoan() {
         var loans = loanService.findAllLoan();

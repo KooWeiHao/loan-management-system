@@ -3,10 +3,10 @@ package eric.koo.loan.management.system.controller;
 import eric.koo.loan.management.system.controller.model.response.InterestRateResponseModel;
 import eric.koo.loan.management.system.controller.model.resquest.InterestRateCreateRequestModel;
 import eric.koo.loan.management.system.entity.InterestRateEntity;
+import eric.koo.loan.management.system.security.RoleBankStaff;
 import eric.koo.loan.management.system.service.InterestRateService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +27,7 @@ class InterestRateController {
         this.interestRateService = interestRateService;
     }
 
-    @Secured("ROLE_BANK_STAFF")
+    @RoleBankStaff("createInterestRate")
     @PostMapping
     InterestRateResponseModel createInterestRate(@Valid @RequestBody InterestRateCreateRequestModel interestRateCreateRequestModel) {
         var interestRate = interestRateService.createInterestRate(interestRateCreateRequestModel.getInterestRateInPercentage(), interestRateCreateRequestModel.getInterestRateDate(), interestRateCreateRequestModel.getType());
