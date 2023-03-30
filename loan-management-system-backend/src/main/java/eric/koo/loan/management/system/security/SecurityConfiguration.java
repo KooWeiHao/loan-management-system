@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,23 +15,12 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.stream.Stream;
 
+@EnableGlobalMethodSecurity(securedEnabled = true)
 @EnableWebSecurity
 class SecurityConfiguration {
 
     @Value("${loan.management.system.api.path.prefix}")
     private String apiPathPrefix;
-
-    @Value("${loan.management.system.public.api}")
-    private String[] publicApi;
-
-    @Value("${loan.management.system.application.public.api}")
-    private String[] applicationPublicApi;
-
-    @Value("${loan.management.system.applicant.post.api}")
-    private String[] applicantPostApi;
-
-    @Value("${loan.management.system.bank.staff.post.api}")
-    private String[] bankStaffPostApi;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPoint authenticationEntryPoint, AuthenticationProvider applicantAuthenticationProvider, AuthenticationProvider bankStaffAuthenticationProvider) throws Exception {
@@ -45,11 +35,10 @@ class SecurityConfiguration {
                 .authenticationProvider(bankStaffAuthenticationProvider)
                 .authenticationProvider(applicantAuthenticationProvider)
                 .authorizeRequests()
-                .antMatchers(publicApi).permitAll()
-                .antMatchers(appendApiPathPrefix(applicationPublicApi)).permitAll()
-                .antMatchers(HttpMethod.POST, appendApiPathPrefix(applicantPostApi)).hasRole(Role.APPLICANT.name())
-                .antMatchers(HttpMethod.POST, appendApiPathPrefix(bankStaffPostApi)).hasRole(Role.BANK_STAFF.name())
-                .anyRequest().authenticated()
+                .antMatchers(appendApiPathPrefix("/auth/**")).permitAll()
+                .antMatchers(HttpMethod.GET, appendApiPathPrefix("/credit-limit")).permitAll()
+                .antMatchers("/api/**").authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .build();
     }
@@ -59,7 +48,7 @@ class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    private String[] appendApiPathPrefix(String[] apis) {
+    private String[] appendApiPathPrefix(String... apis) {
         return Stream.of(apis)
                 .map(api -> apiPathPrefix + api)
                 .toArray(String[]::new);

@@ -6,6 +6,7 @@ import eric.koo.loan.management.system.entity.LoanPaymentEntity;
 import eric.koo.loan.management.system.service.LoanPaymentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,7 @@ class LoanPaymentController {
         this.loanPaymentService = loanPaymentService;
     }
 
+    @Secured("ROLE_APPLICANT")
     @PostMapping
     LoanPaymentResponseModel createLoanPayment(@Valid @RequestBody LoanPaymentCreateRequestModel loanPaymentCreateRequestModel, Principal principal) {
         var loanPayment = loanPaymentService.createLoanPayment(loanPaymentCreateRequestModel.getLoanId(), loanPaymentCreateRequestModel.getAmount(), principal.getName());

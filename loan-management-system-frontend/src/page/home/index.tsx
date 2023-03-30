@@ -21,15 +21,18 @@ const HomePage = () => {
         getApplicant();
     }, []);
 
-    return (
-        <AppLayout>
-            {applicant?.status === Status.PROCESSING ? (
-                <>
+    switch (applicant?.status) {
+        case Status.PROCESSING:
+            return (
+                <AppLayout>
                     <h3>Welcome to Loan Management System.</h3>
                     <p>Please be patience. Our team is reviewing your account</p>
-                </>
-            ) : (
-                <>
+                </AppLayout>
+            );
+
+        case Status.APPROVED:
+            return (
+                <AppLayout>
                     <Row className="d-flex align-items-center">
                         <Col md="6">
                             <strong>Credit Limit:</strong> ${applicant?.creditFacility?.creditLimit}
@@ -42,10 +45,12 @@ const HomePage = () => {
                     <LoanTable />
 
                     <LoanApplyModel show={isApplyLoan} handleClose={() => setIsApplyLoan(false)} />
-                </>
-            )}
-        </AppLayout>
-    );
+                </AppLayout>
+            );
+
+        default:
+            return null;
+    }
 };
 
 export default HomePage;

@@ -1,0 +1,26 @@
+# fly.toml file generated for eric-koo-lms on 2023-03-30T08:08:44+08:00
+
+app = "eric-koo-lms"
+kill_signal = "SIGINT"
+kill_timeout = 5
+mounts = []
+primary_region = "sin"
+processes = []
+
+[[services]]
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443

@@ -18,8 +18,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>loan-management-system-backend</module>
         <module>loan-management-system-frontend</module>
+        <module>loan-management-system-backend</module>
     </modules>
 
 </project>

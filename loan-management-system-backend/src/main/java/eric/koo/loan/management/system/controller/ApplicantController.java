@@ -6,6 +6,7 @@ import eric.koo.loan.management.system.service.ApplicantService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ class ApplicantController {
         this.applicantService = applicantService;
     }
 
+    @Secured("ROLE_BANK_STAFF")
     @PostMapping("/approve")
     ApplicantResponseModel approveApplicant(@RequestParam("applicantId") Long applicantId, Principal principal) {
         var applicant = applicantService.approveApplicant(applicantId, principal.getName());
@@ -36,6 +38,7 @@ class ApplicantController {
         return createApplicantResponse(applicant);
     }
 
+    @Secured("ROLE_APPLICANT")
     @GetMapping
     ApplicantResponseModel getApplicant(Principal principal) {
         var applicant = applicantService.getApplicantByUsername(principal.getName())
@@ -44,6 +47,7 @@ class ApplicantController {
         return createApplicantResponse(applicant);
     }
 
+    @Secured("ROLE_BANK_STAFF")
     @GetMapping("/all")
     List<ApplicantResponseModel> findAllApplicant() {
         var applicants = applicantService.findAllApplicant();

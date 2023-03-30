@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
@@ -60,5 +62,22 @@ class WebMvcConfiguration implements WebMvcConfigurer {
                 .allowedHeaders(allowedHeaders)
                 .maxAge(maxAge)
                 .allowCredentials(allowCredentials);
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        final String[] urlPaths = {
+                "/{path:[\\w\\-]+}",
+                "/{path:[\\w\\-]+}/",
+                "/{path:[\\w\\-]+}/**/{path:[\\w\\-]+}"
+        };
+        for(String urlPath: urlPaths){
+            registry.addViewController(urlPath).setViewName("forward:/");
+        }
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
 }

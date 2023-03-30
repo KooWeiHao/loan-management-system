@@ -1,5 +1,4 @@
 import { StateCreator } from "zustand";
-import { Buffer } from "buffer";
 import AuthSlice, { AuthResponseModel, AuthStoredData, Role, Status } from "../interface/IAuthSlice";
 import httpRequest from "../../config/httpRequest";
 
@@ -48,7 +47,7 @@ const createAuthSlice: StateCreator<AuthSlice, [["zustand/devtools", never]]> = 
                 JSON.stringify({
                     username: response.username,
                     role: response.role,
-                    token: Buffer.from(`${response.username}:${password}`, "utf8").toString("base64"),
+                    token: btoa(`${response.username}:${password}`),
                 })
             );
 
