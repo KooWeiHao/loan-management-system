@@ -27,7 +27,7 @@ class SecurityConfiguration {
         return http.cors()
                 .and()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No session will be created or used by Spring Security. Ensure that each and every request is re-authenticated
                 .and()
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint)
@@ -37,7 +37,7 @@ class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers(appendApiPathPrefix("/auth/**")).permitAll()
                 .antMatchers(HttpMethod.GET, appendApiPathPrefix("/credit-limit")).permitAll()
-                .antMatchers("/api/**").authenticated()
+                .antMatchers("/api/**").authenticated() // FIXME: Please use apiPathPrefix / appendApiPathPrefix()
                 .anyRequest().permitAll()
                 .and()
                 .build();
