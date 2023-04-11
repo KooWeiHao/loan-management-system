@@ -76,6 +76,7 @@ class WebMvcConfiguration implements WebMvcConfigurer {
         }
     }
 
+    // FIXME: This is not necessary. Reference: https://www.baeldung.com/spring-mvc-static-resources
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
