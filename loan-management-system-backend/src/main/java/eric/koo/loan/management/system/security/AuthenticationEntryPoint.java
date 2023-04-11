@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+// to handle unauthenticated requests & return an HTTP response
 @Component
 class AuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
